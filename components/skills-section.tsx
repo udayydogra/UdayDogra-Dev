@@ -74,47 +74,47 @@ export default function SkillsSection() {
   ]
 
   return (
-    <section id="skills" className="py-20 bg-gradient-to-br from-slate-900 to-purple-900">
+    <section id="skills" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-900 to-purple-900">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-6">
-            <Zap className="h-4 w-4" />
+        <div className="text-center mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-4 sm:mb-6">
+            <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
             Skill Tree
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Technical Arsenal</h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Technical Arsenal</h2>
           <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
         </div>
 
-        {/* Rule of thirds: Skills arranged in asymmetrical grid */}
-        <div className="grid grid-cols-12 gap-6">
-          {/* Left column - 2/3 width */}
-          <div className="col-span-8 space-y-6">
+        {/* Mobile-first responsive grid */}
+        <div className="space-y-6 lg:grid lg:grid-cols-12 lg:gap-6 lg:space-y-0">
+          {/* Main skills - Mobile stacked, Desktop left 2/3 */}
+          <div className="lg:col-span-8 space-y-6">
             {skillCategories.slice(0, 3).map((category, categoryIndex) => {
               const IconComponent = category.icon
               return (
                 <div
                   key={category.title}
-                  className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:border-purple-500/50 transition-all duration-300"
+                  className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-6 hover:border-purple-500/50 transition-all duration-300"
                 >
-                  <div className="flex items-center gap-3 mb-6">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
                     <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg">
-                      <IconComponent className="h-6 w-6 text-white" />
+                      <IconComponent className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white">{category.title}</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white">{category.title}</h3>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {category.skills.map((skill, index) => (
-                      <div key={skill.name} className="space-y-3">
+                      <div key={skill.name} className="space-y-2 sm:space-y-3">
                         <div className="flex justify-between items-center">
-                          <span className="text-white font-medium">{skill.name}</span>
+                          <span className="text-white font-medium text-sm sm:text-base">{skill.name}</span>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-gray-400">{getSkillRank(skill.level)}</span>
+                            <span className="text-xs text-gray-400 hidden sm:inline">{getSkillRank(skill.level)}</span>
                             <div className="flex">
                               {[...Array(5)].map((_, i) => (
                                 <Star
                                   key={i}
-                                  className={`h-3 w-3 ${
+                                  className={`h-2.5 w-2.5 sm:h-3 sm:w-3 ${
                                     i < Math.floor(skill.level / 20) ? "text-yellow-400 fill-current" : "text-gray-600"
                                   }`}
                                 />
@@ -124,9 +124,9 @@ export default function SkillsSection() {
                         </div>
 
                         <div className="relative">
-                          <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+                          <div className="w-full bg-gray-700 rounded-full h-2 sm:h-3 overflow-hidden">
                             <div
-                              className={`h-3 rounded-full bg-gradient-to-r ${getSkillColor(skill.level)} transition-all duration-1000 ease-out relative`}
+                              className={`h-2 sm:h-3 rounded-full bg-gradient-to-r ${getSkillColor(skill.level)} transition-all duration-1000 ease-out relative`}
                               style={{ width: `${animatedSkills[skill.name] || 0}%` }}
                             >
                               <div className="absolute inset-0 bg-white/20 animate-pulse" />
@@ -145,23 +145,23 @@ export default function SkillsSection() {
             })}
           </div>
 
-          {/* Right column - 1/3 width */}
-          <div className="col-span-4 space-y-6">
+          {/* Side skills and achievements - Desktop right 1/3 */}
+          <div className="lg:col-span-4 space-y-6">
             {skillCategories.slice(3).map((category) => {
               const IconComponent = category.icon
               return (
                 <div
                   key={category.title}
-                  className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:border-purple-500/50 transition-all duration-300"
+                  className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-6 hover:border-purple-500/50 transition-all duration-300"
                 >
-                  <div className="flex items-center gap-3 mb-6">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
                     <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg">
-                      <IconComponent className="h-6 w-6 text-white" />
+                      <IconComponent className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-white">{category.title}</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-white">{category.title}</h3>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     {category.skills.map((skill) => (
                       <div key={skill.name} className="space-y-2">
                         <div className="flex justify-between items-center">
@@ -170,7 +170,7 @@ export default function SkillsSection() {
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
-                                className={`h-3 w-3 ${
+                                className={`h-2.5 w-2.5 sm:h-3 sm:w-3 ${
                                   i < Math.floor(skill.level / 20) ? "text-yellow-400 fill-current" : "text-gray-600"
                                 }`}
                               />
@@ -179,9 +179,9 @@ export default function SkillsSection() {
                         </div>
 
                         <div className="relative">
-                          <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                          <div className="w-full bg-gray-700 rounded-full h-1.5 sm:h-2 overflow-hidden">
                             <div
-                              className={`h-2 rounded-full bg-gradient-to-r ${getSkillColor(skill.level)} transition-all duration-1000 ease-out`}
+                              className={`h-1.5 sm:h-2 rounded-full bg-gradient-to-r ${getSkillColor(skill.level)} transition-all duration-1000 ease-out`}
                               style={{ width: `${animatedSkills[skill.name] || 0}%` }}
                             />
                           </div>
@@ -198,11 +198,11 @@ export default function SkillsSection() {
             })}
 
             {/* Achievement Card */}
-            <div className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-xl p-6">
+            <div className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-xl p-4 sm:p-6">
               <div className="text-center">
-                <div className="text-4xl mb-2">🏆</div>
-                <div className="text-yellow-400 font-bold">Skill Master</div>
-                <div className="text-white text-sm">Unlocked 15+ technologies</div>
+                <div className="text-3xl sm:text-4xl mb-2">🏆</div>
+                <div className="text-yellow-400 font-bold text-sm sm:text-base">Skill Master</div>
+                <div className="text-white text-xs sm:text-sm">Unlocked 15+ technologies</div>
                 <div className="text-gray-400 text-xs mt-2">+500 XP Bonus</div>
               </div>
             </div>

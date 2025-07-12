@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Trophy, Zap, Star } from "lucide-react"
+import { Trophy, Zap, Star, X } from "lucide-react"
 
 interface GameStatsProps {
   totalXP: number
@@ -11,6 +11,7 @@ interface GameStatsProps {
 export default function GameStats({ totalXP, achievements }: GameStatsProps) {
   const [displayXP, setDisplayXP] = useState(0)
   const [level, setLevel] = useState(1)
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
     // Animate XP counter
@@ -30,41 +31,85 @@ export default function GameStats({ totalXP, achievements }: GameStatsProps) {
     return () => clearInterval(interval)
   }, [totalXP])
 
+  if (!isVisible) return null
+
   return (
-    <div className="fixed top-20 right-4 z-40 bg-black/20 backdrop-blur-md border border-purple-500/30 rounded-xl p-4 text-white">
-      <div className="space-y-3">
-        {/* Level */}
-        <div className="flex items-center gap-2">
-          <Star className="h-5 w-5 text-yellow-400" />
-          <span className="text-sm font-bold">Level {level}</span>
-        </div>
+    <>
+      {/* Mobile Stats - Bottom positioned */}
+      <div className="fixed bottom-4 left-4 right-4 z-40 bg-black/20 backdrop-blur-md border border-purple-500/30 rounded-xl p-3 text-white md:hidden">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            {/* Level */}
+            <div className="flex items-center gap-1">
+              <Star className="h-4 w-4 text-yellow-400" />
+              <span className="text-xs font-bold">LVL {level}</span>
+            </div>
 
-        {/* XP */}
-        <div className="flex items-center gap-2">
-          <Zap className="h-5 w-5 text-blue-400" />
-          <span className="text-sm">{displayXP.toLocaleString()} XP</span>
-        </div>
+            {/* XP */}
+            <div className="flex items-center gap-1">
+              <Zap className="h-4 w-4 text-blue-400" />
+              <span className="text-xs">{displayXP.toLocaleString()}</span>
+            </div>
 
-        {/* Achievements */}
-        <div className="flex items-center gap-2">
-          <Trophy className="h-5 w-5 text-orange-400" />
-          <span className="text-sm">{achievements} Achievements</span>
-        </div>
-
-        {/* Progress to next level */}
-        <div className="space-y-1">
-          <div className="flex justify-between text-xs">
-            <span>Next Level</span>
-            <span>{((displayXP % 1000) / 10).toFixed(0)}%</span>
+            {/* Achievements */}
+            <div className="flex items-center gap-1">
+              <Trophy className="h-4 w-4 text-orange-400" />
+              <span className="text-xs">{achievements}</span>
+            </div>
           </div>
-          <div className="w-full bg-gray-700 rounded-full h-2">
+
+          <button onClick={() => setIsVisible(false)} className="p-1 hover:bg-white/10 rounded">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Progress bar - mobile */}
+        <div className="mt-2">
+          <div className="w-full bg-gray-700 rounded-full h-1.5">
             <div
-              className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-purple-500 to-blue-500 h-1.5 rounded-full transition-all duration-500"
               style={{ width: `${(displayXP % 1000) / 10}%` }}
             />
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Desktop Stats - Top right positioned */}
+      <div className="fixed top-20 right-4 z-40 bg-black/20 backdrop-blur-md border border-purple-500/30 rounded-xl p-4 text-white hidden md:block">
+        <div className="space-y-3">
+          {/* Level */}
+          <div className="flex items-center gap-2">
+            <Star className="h-5 w-5 text-yellow-400" />
+            <span className="text-sm font-bold">Level {level}</span>
+          </div>
+
+          {/* XP */}
+          <div className="flex items-center gap-2">
+            <Zap className="h-5 w-5 text-blue-400" />
+            <span className="text-sm">{displayXP.toLocaleString()} XP</span>
+          </div>
+
+          {/* Achievements */}
+          <div className="flex items-center gap-2">
+            <Trophy className="h-5 w-5 text-orange-400" />
+            <span className="text-sm">{achievements} Achievements</span>
+          </div>
+
+          {/* Progress to next level */}
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span>Next Level</span>
+              <span>{((displayXP % 1000) / 10).toFixed(0)}%</span>
+            </div>
+            <div className="w-full bg-gray-700 rounded-full h-2">
+              <div
+                className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-500"
+                style={{ width: `${(displayXP % 1000) / 10}%` }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
