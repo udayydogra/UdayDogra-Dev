@@ -6,7 +6,7 @@ import { Phone, Mail, Github, Linkedin, ChevronDown, Gamepad2, Code, Rocket } fr
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("")
   const [showCursor, setShowCursor] = useState(true)
-  const fullText = "Software Developer (Fresher)"
+  const fullText = "Software Developer"
 
   useEffect(() => {
     let index = 0
@@ -146,9 +146,9 @@ export default function HeroSection() {
             <div className="relative">
               {/* Glowing ring */}
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full animate-pulse blur-lg opacity-50" />
-              <div className="relative w-48 h-48 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center text-white text-6xl font-bold border-4 border-white/20">
-                UD
-              </div>
+          <img src="My-profile.jpeg"   className="relative w-78 h-78 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center text-white text-6xl font-bold border-4 border-white/20">
+                
+              </img>
               {/* Level badge */}
               <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-3 py-1 rounded-full text-sm font-bold">
                 LVL 9
