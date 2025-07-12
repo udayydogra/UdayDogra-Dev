@@ -28,8 +28,11 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-purple-900 to-slate-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="py-12 sm:py-16 lg:py-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 to-slate-900/80" />
+
+      {/* Maximum width container with 5% spacing */}
+      <div className="w-full px-[2.5%] relative z-10">
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-4 sm:mb-6">
             <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -42,16 +45,16 @@ export default function ContactSection() {
           </p>
         </div>
 
-        {/* Mobile-first responsive layout */}
-        <div className="space-y-8 lg:grid lg:grid-cols-3 lg:gap-12 lg:space-y-0">
-          {/* Contact Information - Mobile first, Desktop left 1/3 */}
-          <div className="lg:col-span-1 space-y-6">
+        {/* Grid layout with 5% gaps */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[5%]">
+          {/* Contact Information - 35% width on desktop */}
+          <div className="lg:col-span-4 space-y-[5%]">
             <div className="bg-black/20 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 sm:p-6">
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
                 <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400" />
                 Quick Connect
               </h3>
-              <div className="space-y-4">
+              <div className="space-y-[5%]">
                 <a
                   href="tel:+919478204726"
                   className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-lg hover:bg-green-500/30 transition-all duration-300 group"
@@ -119,15 +122,15 @@ export default function ContactSection() {
             </div>
           </div>
 
-          {/* Contact Form - Desktop right 2/3 */}
-          <div className="lg:col-span-2">
+          {/* Contact Form - 60% width on desktop */}
+          <div className="lg:col-span-8">
             <div className="bg-black/20 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 sm:p-6 lg:p-8">
               <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-3">
                 <Send className="h-6 w-6 sm:h-8 sm:w-8 text-purple-400" />
                 Send Message
               </h3>
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-[5%]">
                   <div>
                     <label htmlFor="name" className="block text-xs sm:text-sm font-bold text-white mb-2">
                       Player Name *
@@ -175,8 +178,8 @@ export default function ContactSection() {
                   />
                 </div>
 
-                {/* Form Stats */}
-                <div className="grid grid-cols-3 gap-2 sm:gap-4 p-3 sm:p-4 bg-black/30 rounded-lg border border-white/10">
+                {/* Form Stats with 5% gaps */}
+                <div className="grid grid-cols-3 gap-[5%] p-3 sm:p-4 bg-black/30 rounded-lg border border-white/10">
                   <div className="text-center">
                     <div className="text-green-400 font-bold text-xs sm:text-sm">Response Rate</div>
                     <div className="text-white text-lg sm:text-2xl">98%</div>

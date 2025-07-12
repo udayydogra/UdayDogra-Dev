@@ -94,8 +94,11 @@ export default function EducationSection() {
   }
 
   return (
-    <section id="education" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-900 to-purple-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="education" className="py-12 sm:py-16 lg:py-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 to-purple-900/80" />
+
+      {/* Maximum width container with 5% spacing */}
+      <div className="w-full px-[2.5%] relative z-10">
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-4 sm:mb-6">
             <BookOpen className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -105,15 +108,15 @@ export default function EducationSection() {
           <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
         </div>
 
-        {/* Mobile-first responsive layout */}
-        <div className="space-y-8 lg:grid lg:grid-cols-3 lg:gap-12 lg:space-y-0">
-          {/* Education - Mobile first, Desktop left 2/3 */}
-          <div className="lg:col-span-2">
+        {/* Grid layout with 5% gaps */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[5%]">
+          {/* Education - 65% width on desktop */}
+          <div className="lg:col-span-8">
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 flex items-center gap-3">
               <GraduationCap className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
               Academic Journey
             </h3>
-            <div className="space-y-6">
+            <div className="space-y-[5%]">
               {education.map((edu, index) => (
                 <div
                   key={edu.degree}
@@ -167,13 +170,13 @@ export default function EducationSection() {
             </div>
           </div>
 
-          {/* Certifications - Desktop right 1/3 */}
-          <div className="lg:col-span-1">
+          {/* Certifications - 30% width on desktop */}
+          <div className="lg:col-span-4">
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-6 sm:mb-8 flex items-center gap-3">
               <Award className="h-6 w-6 sm:h-7 sm:w-7 text-purple-400" />
               Certifications
             </h3>
-            <div className="space-y-6">
+            <div className="space-y-[5%]">
               {certifications.map((cert) => (
                 <div
                   key={cert.title}

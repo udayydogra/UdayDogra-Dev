@@ -74,8 +74,11 @@ export default function SkillsSection() {
   ]
 
   return (
-    <section id="skills" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-900 to-purple-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="skills" className="py-12 sm:py-16 lg:py-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 to-purple-900/80" />
+
+      {/* Maximum width container with 5% spacing */}
+      <div className="w-full px-[2.5%] relative z-10">
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-4 sm:mb-6">
             <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -85,10 +88,10 @@ export default function SkillsSection() {
           <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
         </div>
 
-        {/* Mobile-first responsive grid */}
-        <div className="space-y-6 lg:grid lg:grid-cols-12 lg:gap-6 lg:space-y-0">
-          {/* Main skills - Mobile stacked, Desktop left 2/3 */}
-          <div className="lg:col-span-8 space-y-6">
+        {/* Grid layout with 5% gaps */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[5%]">
+          {/* Main skills - 70% width on desktop */}
+          <div className="lg:col-span-8 space-y-[5%]">
             {skillCategories.slice(0, 3).map((category, categoryIndex) => {
               const IconComponent = category.icon
               return (
@@ -103,7 +106,7 @@ export default function SkillsSection() {
                     <h3 className="text-xl sm:text-2xl font-bold text-white">{category.title}</h3>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-[5%]">
                     {category.skills.map((skill, index) => (
                       <div key={skill.name} className="space-y-2 sm:space-y-3">
                         <div className="flex justify-between items-center">
@@ -145,8 +148,8 @@ export default function SkillsSection() {
             })}
           </div>
 
-          {/* Side skills and achievements - Desktop right 1/3 */}
-          <div className="lg:col-span-4 space-y-6">
+          {/* Side skills and achievements - 25% width on desktop */}
+          <div className="lg:col-span-4 space-y-[5%]">
             {skillCategories.slice(3).map((category) => {
               const IconComponent = category.icon
               return (

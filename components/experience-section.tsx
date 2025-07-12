@@ -49,8 +49,11 @@ export default function ExperienceSection() {
   }
 
   return (
-    <section id="experience" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-purple-900 to-slate-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="experience" className="py-12 sm:py-16 lg:py-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 to-slate-900/80" />
+
+      {/* Maximum width container with 5% spacing */}
+      <div className="w-full px-[2.5%] relative z-10">
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-4 sm:mb-6">
             <Crown className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -60,17 +63,17 @@ export default function ExperienceSection() {
           <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
         </div>
 
-        {/* Mobile-first responsive layout */}
-        <div className="space-y-8 lg:grid lg:grid-cols-3 lg:gap-12 lg:space-y-0">
-          {/* Timeline - Mobile first, Desktop left 1/3 */}
-          <div className="lg:col-span-1">
+        {/* Grid layout with 5% gaps */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[5%]">
+          {/* Timeline - 30% width on desktop */}
+          <div className="lg:col-span-4">
             <div className="bg-black/20 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 sm:p-6">
               <h3 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
                 <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
                 Timeline
               </h3>
 
-              <div className="space-y-6">
+              <div className="space-y-[5%]">
                 {experience.map((exp, index) => (
                   <div key={exp.title} className="relative">
                     {index !== experience.length - 1 && (
@@ -103,8 +106,8 @@ export default function ExperienceSection() {
             </div>
           </div>
 
-          {/* Experience Details - Desktop right 2/3 */}
-          <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+          {/* Experience Details - 65% width on desktop */}
+          <div className="lg:col-span-8 space-y-[5%]">
             {experience.map((exp) => (
               <div
                 key={exp.title}
@@ -141,17 +144,17 @@ export default function ExperienceSection() {
                     </div>
                   </div>
 
-                  {/* Achievements */}
+                  {/* Achievements with 5% gaps */}
                   <div className="mb-4 sm:mb-6">
                     <h4 className="text-white font-bold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
                       <Trophy className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
                       Achievements Unlocked
                     </h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-[5%]">
                       {exp.achievements.map((achievement) => (
                         <span
                           key={achievement}
-                          className={`px-2 py-1 sm:px-3 sm:py-1 bg-gradient-to-r ${getRarityColor(exp.rarity)}/20 border border-current rounded-full text-xs sm:text-sm font-medium`}
+                          className={`px-2 py-1 sm:px-3 sm:py-1 bg-gradient-to-r ${getRarityColor(exp.rarity)}/20 border border-current rounded-full text-xs sm:text-sm font-medium text-center`}
                           style={{
                             color:
                               exp.rarity === "legendary" ? "#fbbf24" : exp.rarity === "epic" ? "#a855f7" : "#3b82f6",

@@ -32,7 +32,8 @@ export default function AboutSection() {
       {/* Section overlay for better contrast */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 to-purple-900/80" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* Maximum width container with 5% spacing */}
+      <div className="w-full px-[2.5%] relative z-10">
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-4 sm:mb-6">
             <User className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -44,17 +45,17 @@ export default function AboutSection() {
           <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
         </div>
 
-        {/* Mobile-first responsive layout */}
-        <div className="space-y-8 lg:grid lg:grid-cols-3 lg:gap-12 lg:space-y-0 items-start">
-          {/* Stats Dashboard - Mobile first, Desktop left 1/3 */}
-          <div className="lg:col-span-1 space-y-6">
+        {/* Grid layout with 5% gaps */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[5%] items-start">
+          {/* Stats Dashboard - 35% width on desktop */}
+          <div className="lg:col-span-4 space-y-[5%]">
             <div className="bg-black/40 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 sm:p-6">
               <h3 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
                 <Target className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
                 Player Stats
               </h3>
 
-              <div className="grid grid-cols-2 gap-4 sm:space-y-0 sm:grid-cols-1 sm:gap-0 sm:space-y-4">
+              <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-200 text-sm sm:text-base">Projects</span>
                   <span className="text-xl sm:text-2xl font-bold text-green-400">{stats.projects}</span>
@@ -103,8 +104,8 @@ export default function AboutSection() {
             </div>
           </div>
 
-          {/* Main Content - Desktop right 2/3 */}
-          <div className="lg:col-span-2">
+          {/* Main Content - 60% width on desktop */}
+          <div className="lg:col-span-8">
             <div className="bg-black/40 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 sm:p-6 lg:p-8">
               <div className="flex items-start gap-4 mb-6 sm:mb-8">
                 <div className="p-2 sm:p-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex-shrink-0">
@@ -124,10 +125,10 @@ export default function AboutSection() {
                 </div>
               </div>
 
-              {/* Skills and Interests - Mobile responsive */}
-              <div className="space-y-6 sm:space-y-8 lg:grid lg:grid-cols-3 lg:gap-8 lg:space-y-0">
-                {/* Languages */}
-                <div className="lg:col-span-1">
+              {/* Skills and Interests with 5% gaps */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-[5%]">
+                {/* Languages - 35% width */}
+                <div className="lg:col-span-4">
                   <h4 className="font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
                     <Zap className="h-4 w-4 text-blue-400" />
                     Languages Known
@@ -145,13 +146,13 @@ export default function AboutSection() {
                   </div>
                 </div>
 
-                {/* Interests */}
-                <div className="lg:col-span-2">
+                {/* Interests - 60% width */}
+                <div className="lg:col-span-8">
                   <h4 className="font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
                     <Target className="h-4 w-4 text-green-400" />
                     Current Interests & Focus Areas
                   </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-[5%]">
                     {interests.map((interest) => (
                       <div
                         key={interest}

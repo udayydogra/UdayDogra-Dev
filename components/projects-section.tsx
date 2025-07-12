@@ -79,8 +79,11 @@ export default function ProjectsSection() {
   }
 
   return (
-    <section id="projects" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-purple-900 to-slate-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="projects" className="py-12 sm:py-16 lg:py-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 to-slate-900/80" />
+
+      {/* Maximum width container with 5% spacing */}
+      <div className="w-full px-[2.5%] relative z-10">
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-4 sm:mb-6">
             <Trophy className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -90,10 +93,10 @@ export default function ProjectsSection() {
           <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
         </div>
 
-        {/* Mobile-first responsive layout */}
-        <div className="space-y-8 lg:grid lg:grid-cols-3 lg:gap-8 lg:space-y-0 mb-8 sm:mb-12">
-          {/* Featured Project - Mobile full width, Desktop 2/3 width */}
-          <div className="lg:col-span-2">
+        {/* Grid layout with 5% gaps */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[5%] mb-8 sm:mb-12">
+          {/* Featured Project - 70% width on desktop */}
+          <div className="lg:col-span-8">
             <div
               className={`relative bg-black/20 backdrop-blur-sm border-2 ${getRarityBorder(projects[0].rarity)} rounded-xl p-4 sm:p-6 lg:p-8 hover:scale-105 transition-all duration-300 overflow-hidden group`}
               onMouseEnter={() => setHoveredProject(projects[0].id)}
@@ -140,12 +143,12 @@ export default function ProjectsSection() {
                   </div>
                 </div>
 
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
+                {/* Tech Stack with 5% gaps */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-[5%] mb-4 sm:mb-6">
                   {projects[0].tech.map((tech) => (
                     <span
                       key={tech}
-                      className="px-2 py-1 sm:px-3 sm:py-1 bg-purple-600/30 text-purple-300 rounded-full text-xs sm:text-sm border border-purple-500/30"
+                      className="px-2 py-1 sm:px-3 sm:py-1 bg-purple-600/30 text-purple-300 rounded-full text-xs sm:text-sm border border-purple-500/30 text-center"
                     >
                       {tech}
                     </span>
@@ -181,8 +184,8 @@ export default function ProjectsSection() {
             </div>
           </div>
 
-          {/* Side Projects - Mobile full width, Desktop 1/3 width */}
-          <div className="lg:col-span-1 space-y-6">
+          {/* Side Projects - 25% width on desktop */}
+          <div className="lg:col-span-4 space-y-[5%]">
             {projects.slice(1).map((project) => (
               <div
                 key={project.id}
@@ -220,12 +223,12 @@ export default function ProjectsSection() {
                     </div>
                   </div>
 
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-1 mb-4">
+                  {/* Tech Stack with 5% gaps */}
+                  <div className="grid grid-cols-2 gap-[5%] mb-4">
                     {project.tech.map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 py-1 bg-purple-600/30 text-purple-300 rounded text-xs border border-purple-500/30"
+                        className="px-2 py-1 bg-purple-600/30 text-purple-300 rounded text-xs border border-purple-500/30 text-center"
                       >
                         {tech}
                       </span>

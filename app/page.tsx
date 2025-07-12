@@ -43,23 +43,24 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen relative">
-      {/* Global Background Image */}
+      {/* Global Background Image - Ultra Responsive */}
       <div className="fixed inset-0 z-0">
         <Image
           src="/background-image.jpg"
           alt="Portfolio Background"
           fill
-          className="object-cover"
+          className="object-cover object-center"
           priority
           quality={85}
+          sizes="100vw"
         />
-        {/* Dark overlay for better readability */}
-        <div className="absolute inset-0 bg-black/50" />
-        {/* Gaming gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-purple-900/40 to-slate-900/60" />
+        {/* Responsive dark overlay */}
+        <div className="absolute inset-0 bg-black/40 sm:bg-black/45 md:bg-black/50 lg:bg-black/55 xl:bg-black/60" />
+        {/* Responsive gaming gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-purple-900/30 to-slate-900/50 sm:from-slate-900/60 sm:via-purple-900/40 sm:to-slate-900/60" />
       </div>
 
-      {/* Content with relative positioning */}
+      {/* Content with responsive positioning */}
       <div className="relative z-10">
         <Header activeSection={activeSection} />
         <GameStats totalXP={totalXP} achievements={achievements} />

@@ -35,75 +35,75 @@ export default function GameStats({ totalXP, achievements }: GameStatsProps) {
 
   return (
     <>
-      {/* Mobile Stats - Bottom positioned */}
-      <div className="fixed bottom-4 left-4 right-4 z-40 bg-black/20 backdrop-blur-md border border-purple-500/30 rounded-xl p-3 text-white md:hidden">
+      {/* Mobile Stats - Ultra responsive bottom positioning with 5% spacing */}
+      <div className="fixed bottom-2 left-[2.5%] right-[2.5%] sm:bottom-3 md:bottom-4 z-40 bg-black/20 sm:bg-black/30 backdrop-blur-md border border-purple-500/30 rounded-lg sm:rounded-xl p-2 sm:p-3 text-white md:hidden">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            {/* Level */}
-            <div className="flex items-center gap-1">
-              <Star className="h-4 w-4 text-yellow-400" />
-              <span className="text-xs font-bold">LVL {level}</span>
+          <div className="flex items-center gap-[5%]">
+            {/* Level - Responsive */}
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <Star className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
+              <span className="text-xs sm:text-sm font-bold">LVL {level}</span>
             </div>
 
-            {/* XP */}
-            <div className="flex items-center gap-1">
-              <Zap className="h-4 w-4 text-blue-400" />
-              <span className="text-xs">{displayXP.toLocaleString()}</span>
+            {/* XP - Responsive */}
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400" />
+              <span className="text-xs sm:text-sm">{displayXP.toLocaleString()}</span>
             </div>
 
-            {/* Achievements */}
-            <div className="flex items-center gap-1">
-              <Trophy className="h-4 w-4 text-orange-400" />
-              <span className="text-xs">{achievements}</span>
+            {/* Achievements - Responsive */}
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <Trophy className="h-3 w-3 sm:h-4 sm:w-4 text-orange-400" />
+              <span className="text-xs sm:text-sm">{achievements}</span>
             </div>
           </div>
 
           <button onClick={() => setIsVisible(false)} className="p-1 hover:bg-white/10 rounded">
-            <X className="h-4 w-4" />
+            <X className="h-3 w-3 sm:h-4 sm:w-4" />
           </button>
         </div>
 
-        {/* Progress bar - mobile */}
-        <div className="mt-2">
-          <div className="w-full bg-gray-700 rounded-full h-1.5">
+        {/* Progress bar - mobile responsive */}
+        <div className="mt-2 sm:mt-3">
+          <div className="w-full bg-gray-700 rounded-full h-1 sm:h-1.5 md:h-2">
             <div
-              className="bg-gradient-to-r from-purple-500 to-blue-500 h-1.5 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-purple-500 to-blue-500 h-1 sm:h-1.5 md:h-2 rounded-full transition-all duration-500"
               style={{ width: `${(displayXP % 1000) / 10}%` }}
             />
           </div>
         </div>
       </div>
 
-      {/* Desktop Stats - Top right positioned */}
-      <div className="fixed top-20 right-4 z-40 bg-black/20 backdrop-blur-md border border-purple-500/30 rounded-xl p-4 text-white hidden md:block">
-        <div className="space-y-3">
-          {/* Level */}
-          <div className="flex items-center gap-2">
-            <Star className="h-5 w-5 text-yellow-400" />
-            <span className="text-sm font-bold">Level {level}</span>
+      {/* Desktop Stats - Ultra responsive positioning with 5% spacing */}
+      <div className="fixed top-16 sm:top-18 md:top-20 lg:top-24 right-[2.5%] z-40 bg-black/20 sm:bg-black/30 backdrop-blur-md border border-purple-500/30 rounded-lg sm:rounded-xl p-3 sm:p-4 lg:p-5 xl:p-6 text-white hidden md:block">
+        <div className="space-y-2 sm:space-y-3 lg:space-y-4">
+          {/* Level - Desktop responsive */}
+          <div className="flex items-center gap-2 lg:gap-3">
+            <Star className="h-4 w-4 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-yellow-400" />
+            <span className="text-sm lg:text-base xl:text-lg font-bold">Level {level}</span>
           </div>
 
-          {/* XP */}
-          <div className="flex items-center gap-2">
-            <Zap className="h-5 w-5 text-blue-400" />
-            <span className="text-sm">{displayXP.toLocaleString()} XP</span>
+          {/* XP - Desktop responsive */}
+          <div className="flex items-center gap-2 lg:gap-3">
+            <Zap className="h-4 w-4 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-blue-400" />
+            <span className="text-sm lg:text-base xl:text-lg">{displayXP.toLocaleString()} XP</span>
           </div>
 
-          {/* Achievements */}
-          <div className="flex items-center gap-2">
-            <Trophy className="h-5 w-5 text-orange-400" />
-            <span className="text-sm">{achievements} Achievements</span>
+          {/* Achievements - Desktop responsive */}
+          <div className="flex items-center gap-2 lg:gap-3">
+            <Trophy className="h-4 w-4 lg:h-5 lg:w-5 xl:h-6 xl:w-6 text-orange-400" />
+            <span className="text-sm lg:text-base xl:text-lg">{achievements} Achievements</span>
           </div>
 
-          {/* Progress to next level */}
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs">
+          {/* Progress to next level - Desktop responsive */}
+          <div className="space-y-1 sm:space-y-2">
+            <div className="flex justify-between text-xs sm:text-sm lg:text-base">
               <span>Next Level</span>
               <span>{((displayXP % 1000) / 10).toFixed(0)}%</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-700 rounded-full h-2 sm:h-2.5 lg:h-3">
               <div
-                className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-500"
+                className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 sm:h-2.5 lg:h-3 rounded-full transition-all duration-500"
                 style={{ width: `${(displayXP % 1000) / 10}%` }}
               />
             </div>
