@@ -29,10 +29,10 @@ export default function Header({ activeSection }: HeaderProps) {
   ]
 
   return (
-    <nav className="fixed top-0 w-full bg-black/20 backdrop-blur-md border-b border-purple-500/30 z-50">
+    <nav className="fixed top-0 w-full bg-black/30 backdrop-blur-md border-b border-purple-500/30 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
-          <div className="flex items-center gap-2 font-bold text-lg sm:text-xl text-white">
+          <div className="flex items-center gap-2 font-bold text-lg sm:text-xl text-white drop-shadow-md">
             <Gamepad2 className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400" />
             <span className="hidden xs:inline">Uday Dogra</span>
             <span className="xs:hidden">UD</span>
@@ -46,8 +46,8 @@ export default function Header({ activeSection }: HeaderProps) {
                 onClick={() => scrollToSection(item.id)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${
                   activeSection === item.id
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium"
-                    : "text-gray-300 hover:text-white hover:bg-white/10"
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium shadow-lg"
+                    : "text-gray-200 hover:text-white hover:bg-white/20"
                 }`}
               >
                 <span className="text-sm">{item.icon}</span>
@@ -59,7 +59,7 @@ export default function Header({ activeSection }: HeaderProps) {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 rounded-md text-gray-300 hover:text-white hover:bg-white/10"
+            className="lg:hidden p-2 rounded-md text-gray-200 hover:text-white hover:bg-white/20"
           >
             {isMenuOpen ? <X className="h-5 w-5 sm:h-6 sm:w-6" /> : <Menu className="h-5 w-5 sm:h-6 sm:w-6" />}
           </button>
@@ -67,13 +67,13 @@ export default function Header({ activeSection }: HeaderProps) {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-purple-500/30">
+          <div className="lg:hidden py-4 border-t border-purple-500/30 bg-black/40 backdrop-blur-sm rounded-b-lg">
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-col sm:space-y-2 sm:gap-0">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="flex items-center gap-2 sm:gap-3 text-left px-3 py-2 sm:px-4 sm:py-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 text-sm"
+                  className="flex items-center gap-2 sm:gap-3 text-left px-3 py-2 sm:px-4 sm:py-3 text-gray-200 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200 text-sm"
                 >
                   <span>{item.icon}</span>
                   <span className="capitalize">{item.label}</span>

@@ -39,13 +39,21 @@ export default function HeroSection() {
 
   return (
     <section id="home" className="pt-16 min-h-screen flex items-center relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-slate-900/20" />
-      <div className="absolute inset-0">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image src="/background-image.jpg" alt="Background" fill className="object-cover" priority quality={85} />
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/60" />
+        {/* Gaming overlay with gradients */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-blue-900/30 to-slate-900/40" />
+      </div>
+
+      {/* Animated particles */}
+      <div className="absolute inset-0 z-10">
         {[...Array(30)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-white/20 rounded-full animate-pulse"
+            className="absolute w-1 h-1 bg-white/30 rounded-full animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -55,7 +63,7 @@ export default function HeroSection() {
         ))}
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 relative z-20">
         {/* Mobile-first responsive layout */}
         <div className="flex flex-col lg:grid lg:grid-cols-3 gap-8 lg:gap-12 items-center min-h-[60vh]">
           {/* Mobile: Avatar first, Desktop: Right 1/3 */}
@@ -73,7 +81,7 @@ export default function HeroSection() {
             </div>
 
             {/* Achievement Preview */}
-            <div className="bg-black/30 backdrop-blur-sm border border-purple-500/30 rounded-lg p-3 sm:p-4 w-full max-w-xs text-center">
+            <div className="bg-black/40 backdrop-blur-sm border border-purple-500/30 rounded-lg p-3 sm:p-4 w-full max-w-xs text-center">
               <div className="text-yellow-400 text-xs sm:text-sm font-bold mb-1 sm:mb-2">Latest Achievement</div>
               <div className="text-white text-xs">🏆 React Master</div>
               <div className="text-gray-400 text-xs">Completed React.js certification</div>
@@ -89,34 +97,34 @@ export default function HeroSection() {
             </div>
 
             <div className="space-y-4 sm:space-y-6">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
                 <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Uday</span>
                 <br />
                 <span className="text-white">Dogra</span>
               </h1>
 
               {/* Typing animation */}
-              <div className="text-lg sm:text-xl lg:text-2xl text-gray-300 h-8">
+              <div className="text-lg sm:text-xl lg:text-2xl text-gray-200 h-8 drop-shadow-md">
                 {typedText}
                 <span className={`${showCursor ? "opacity-100" : "opacity-0"} transition-opacity`}>|</span>
               </div>
 
               {/* Stats Cards - Mobile responsive */}
               <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-6 sm:mt-8 max-w-md mx-auto lg:mx-0">
-                <div className="bg-black/30 backdrop-blur-sm border border-purple-500/30 rounded-lg p-2 sm:p-4 text-center">
+                <div className="bg-black/40 backdrop-blur-sm border border-purple-500/30 rounded-lg p-2 sm:p-4 text-center">
                   <Code className="h-4 w-4 sm:h-6 sm:w-6 text-purple-400 mx-auto mb-1 sm:mb-2" />
                   <div className="text-lg sm:text-2xl font-bold text-white">15+</div>
-                  <div className="text-xs text-gray-400">Technologies</div>
+                  <div className="text-xs text-gray-300">Technologies</div>
                 </div>
-                <div className="bg-black/30 backdrop-blur-sm border border-blue-500/30 rounded-lg p-2 sm:p-4 text-center">
+                <div className="bg-black/40 backdrop-blur-sm border border-blue-500/30 rounded-lg p-2 sm:p-4 text-center">
                   <Rocket className="h-4 w-4 sm:h-6 sm:w-6 text-blue-400 mx-auto mb-1 sm:mb-2" />
                   <div className="text-lg sm:text-2xl font-bold text-white">3</div>
-                  <div className="text-xs text-gray-400">Projects</div>
+                  <div className="text-xs text-gray-300">Projects</div>
                 </div>
-                <div className="bg-black/30 backdrop-blur-sm border border-green-500/30 rounded-lg p-2 sm:p-4 text-center">
+                <div className="bg-black/40 backdrop-blur-sm border border-green-500/30 rounded-lg p-2 sm:p-4 text-center">
                   <Gamepad2 className="h-4 w-4 sm:h-6 sm:w-6 text-green-400 mx-auto mb-1 sm:mb-2" />
                   <div className="text-lg sm:text-2xl font-bold text-white">2+</div>
-                  <div className="text-xs text-gray-400">Years Coding</div>
+                  <div className="text-xs text-gray-300">Years Coding</div>
                 </div>
               </div>
             </div>
@@ -125,7 +133,7 @@ export default function HeroSection() {
             <div className="flex flex-wrap justify-center lg:justify-start gap-2 sm:gap-4">
               <a
                 href="tel:+919478204726"
-                className="flex items-center gap-1 sm:gap-2 bg-black/20 backdrop-blur-sm border border-white/20 text-white px-2 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:scale-105 text-xs sm:text-sm"
+                className="flex items-center gap-1 sm:gap-2 bg-black/30 backdrop-blur-sm border border-white/20 text-white px-2 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 text-xs sm:text-sm"
               >
                 <Phone className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span className="hidden sm:inline">+91 94782 04726</span>
@@ -133,7 +141,7 @@ export default function HeroSection() {
               </a>
               <a
                 href="mailto:Budaydogra204@gmail.com"
-                className="flex items-center gap-1 sm:gap-2 bg-black/20 backdrop-blur-sm border border-white/20 text-white px-2 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:scale-105 text-xs sm:text-sm"
+                className="flex items-center gap-1 sm:gap-2 bg-black/30 backdrop-blur-sm border border-white/20 text-white px-2 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 text-xs sm:text-sm"
               >
                 <Mail className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>Email</span>
@@ -142,14 +150,14 @@ export default function HeroSection() {
                 href="https://github.com/udayydogra"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 sm:gap-2 bg-black/20 backdrop-blur-sm border border-white/20 text-white px-2 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:scale-105 text-xs sm:text-sm"
+                className="flex items-center gap-1 sm:gap-2 bg-black/30 backdrop-blur-sm border border-white/20 text-white px-2 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 text-xs sm:text-sm"
               >
                 <Github className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>GitHub</span>
               </a>
               <a
                 href="#"
-                className="flex items-center gap-1 sm:gap-2 bg-black/20 backdrop-blur-sm border border-white/20 text-white px-2 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:scale-105 text-xs sm:text-sm"
+                className="flex items-center gap-1 sm:gap-2 bg-black/30 backdrop-blur-sm border border-white/20 text-white px-2 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 text-xs sm:text-sm"
               >
                 <Linkedin className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>LinkedIn</span>
@@ -158,7 +166,7 @@ export default function HeroSection() {
 
             <button
               onClick={() => scrollToSection("about")}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 hover:scale-105 font-bold text-sm sm:text-base shadow-lg"
             >
               Start Quest
               <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 animate-bounce" />
