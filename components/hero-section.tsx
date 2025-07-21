@@ -43,7 +43,7 @@ export default function HeroSection() {
       {/* Background Image - Responsive */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/background-image.png"
+          src="/background-image.jpg"
           alt="Background"
           fill
           className="object-cover object-center"

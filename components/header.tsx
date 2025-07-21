@@ -29,7 +29,7 @@ export default function Header({ activeSection }: HeaderProps) {
   ]
 
   return (
-    <nav className="fixed top-0 w-screen bg-black/20 sm:bg-black/30 backdrop-blur-md border-b border-purple-500/30 z-50">
+    <nav className="fixed top-0 w-full bg-black/20 sm:bg-black/30 backdrop-blur-md border-b border-purple-500/30 z-50">
       {/* Maximum width container with 5% spacing */}
       <div className="w-full px-[2.5%]">
         <div className="flex justify-between items-center h-12 xs:h-14 sm:h-16 lg:h-18 xl:h-20">
@@ -41,12 +41,12 @@ export default function Header({ activeSection }: HeaderProps) {
           </div>
 
           {/* Desktop Navigation with 5% gaps */}
-          <div className="hidden lg:flex gap-[1%] lg:pe-8">
+          <div className="hidden lg:flex gap-[2%]">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`flex items-center gap-1.5 lg:gap-2 xl:gap-2.5 px-2 py-1.5 lg:px-3 lg:py-2 xl:px-4 xl:py-2.5 2xl:px-5 2xl:py-3 rounded-lg transition-all duration-200 text-xs lg:text-sm xl:text-base 2xl:text-lg ${
+                className={`flex items-center gap-1.5 lg:gap-2 xl:gap-3 px-2 py-1.5 lg:px-3 lg:py-2 xl:px-4 xl:py-2.5 2xl:px-5 2xl:py-3 rounded-lg transition-all duration-200 text-xs lg:text-sm xl:text-base 2xl:text-lg ${
                   activeSection === item.id
                     ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium shadow-lg"
                     : "text-gray-200 hover:text-white hover:bg-white/20"
