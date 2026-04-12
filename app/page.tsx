@@ -13,9 +13,8 @@ import TerminalSection from "@/components/terminal-section"
 import ContactSection from "@/components/contact-section"
 import Footer from "@/components/footer"
 import BackToTop from "@/components/back-to-top"
-import BlogSection from "@/components/blog-section"
 
-const SECTIONS = ["home", "about", "skills", "projects", "bugbounty", "workflow", "logs", "terminal", "contact"]
+const SECTIONS = ["home", "about", "skills", "projects", "bugbounty", "workflow", "terminal", "contact"]
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home")
@@ -50,7 +49,6 @@ export default function Home() {
       <ProjectsSection />
       <BugBountySection />
       <WorkflowSection />
-      <BlogSection />
       <TerminalSection />
       <ContactSection />
       <Footer />
