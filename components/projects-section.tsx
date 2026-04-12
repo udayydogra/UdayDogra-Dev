@@ -1,267 +1,155 @@
 "use client"
 
-import { useState } from "react"
-import { ExternalLink, Trophy, Zap } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { ExternalLink, Tag } from "lucide-react"
+
+const projects = [
+  {
+    id: 1,
+    emoji: "🎯",
+    title: "SSRF Recon Setup",
+    badge: "Bug Bounty",
+    badgeColor: "tag-red",
+    description:
+      "Built a HackerOne-style recon methodology for SSRF detection. Set up Burp Collaborator-equivalent (interactsh) for out-of-band detection, combined with paramspider and custom nuclei templates to automate SSRF probing across subdomains.",
+    relevance: "Real-world bug bounty methodology — not just theory",
+    tools: ["Burp Suite", "interactsh", "ParamSpider", "Nuclei", "Python", "Bash"],
+    toolClass: "tag-red",
+  },
+  {
+    id: 2,
+    emoji: "⚙️",
+    title: "Burp Suite Pro-Level Workflow",
+    badge: "AppSec Tooling",
+    badgeColor: "tag-cyber",
+    description:
+      "Engineered a professional Burp Suite workflow without a Pro license. Built custom active scan extensions, integrated SQLmap + FFUF output into Burp project files, and set up scope-aware automated scanning with match-and-replace rules.",
+    relevance: "Professional pentest workflow on a community license",
+    tools: ["Burp Suite CE", "FFUF", "SQLMap", "Jython Extensions", "Intruder"],
+    toolClass: "tag-cyber",
+  },
+  {
+    id: 3,
+    emoji: "☁️",
+    title: "Kali Linux on Google Cloud",
+    badge: "Cloud Lab",
+    badgeColor: "tag-green",
+    description:
+      "Deployed and configured a persistent, high-performance Kali Linux instance on GCP. Set up SSH tunneling, VNC remote access, automated tool installation, and configured firewall rules for safe pentesting without residential IP exposure.",
+    relevance: "Cloud-based pentest lab — scales with testing needs",
+    tools: ["Google Cloud", "Kali Linux", "SSH", "VNC", "Firewall Rules", "Bash"],
+    toolClass: "tag-green",
+  },
+  {
+    id: 4,
+    emoji: "🔍",
+    title: "Python Web Scraper + GUI",
+    badge: "Recon Tooling",
+    badgeColor: "tag-cyber",
+    description:
+      "Developed a multi-threaded Python web scraper with a Tkinter GUI for structured recon. Features URL harvesting, form extraction, parameter enumeration, and export to JSON/CSV — useful for pre-engagement reconnaissance.",
+    relevance: "Recon automation — speeds up target enumeration",
+    tools: ["Python", "Tkinter", "BeautifulSoup", "Requests", "Threading"],
+    toolClass: "tag-cyber",
+  },
+  {
+    id: 5,
+    emoji: "📋",
+    title: "Advanced Note-Taking App",
+    badge: "Productivity",
+    badgeColor: "tag-green",
+    description:
+      "Built a structured note-taking application tailored for security research — with PDF import/export, vulnerability templates, evidence screenshot embedding, and markdown support. Organizes findings by severity and vector.",
+    relevance: "Professional vulnerability documentation — report-ready output",
+    tools: ["Python", "Tkinter", "PyMuPDF", "SQLite", "Markdown"],
+    toolClass: "tag-green",
+  },
+]
 
 export default function ProjectsSection() {
-  const [hoveredProject, setHoveredProject] = useState<string | null>(null)
+  const [visible, setVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
-  const projects = [
-    {
-      id: "synaptiflow",
-      title: "SynaptiFlow",
-      subtitle: "AI Note-Taking Platform",
-      year: "2024–2025",
-      url: "https://www.synaptiflow.space",
-      description:
-        "Built an AI-driven productivity tool using React.js, PostgreSQL, Python, RAG. Designed document parser, implemented RAG-based semantic search, and developed backend APIs. Improved researcher workflow with structured data visualization.",
-      tech: ["React.js", "PostgreSQL", "Python", "RAG"],
-      difficulty: "Legendary",
-      xpReward: 2500,
-      achievement: "AI Pioneer",
-      completionRate: 95,
-      rarity: "legendary",
-    },
-    {
-      id: "hackers-helper",
-      title: "Hacker's Helper",
-      subtitle: "Linux Automation Tool",
-      year: "2024",
-      description:
-        "Created a GUI-based Linux script executor using Python, Tkinter, Shell Scripting. Enhanced automation and reduced repetitive task execution by 30%.",
-      tech: ["Python", "Tkinter", "Shell Scripting"],
-      difficulty: "Epic",
-      xpReward: 1800,
-      achievement: "Automation Master",
-      completionRate: 100,
-      rarity: "epic",
-    },
-    {
-      id: "instagram-clone",
-      title: "Instagram Clone",
-      subtitle: "Front-End Project",
-      year: "2023",
-      description:
-        "Developed a responsive Instagram interface using HTML, CSS. Practiced layout design and interactive elements.",
-      tech: ["HTML", "CSS"],
-      difficulty: "Rare",
-      xpReward: 1200,
-      achievement: "UI Craftsman",
-      completionRate: 100,
-      rarity: "rare",
-    },
-  ]
-
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case "legendary":
-        return "from-yellow-400 to-orange-500"
-      case "epic":
-        return "from-purple-500 to-pink-500"
-      case "rare":
-        return "from-blue-500 to-cyan-500"
-      default:
-        return "from-gray-500 to-gray-600"
-    }
-  }
-
-  const getRarityBorder = (rarity: string) => {
-    switch (rarity) {
-      case "legendary":
-        return "border-yellow-500/50"
-      case "epic":
-        return "border-purple-500/50"
-      case "rare":
-        return "border-blue-500/50"
-      default:
-        return "border-gray-500/50"
-    }
-  }
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
+      { threshold: 0.05 }
+    )
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <section id="projects" className="py-12 sm:py-16 lg:py-20 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 to-slate-900/80" />
+    <section id="projects" className="py-20 lg:py-28 relative bg-[#030712]" ref={ref}>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
 
-      {/* Maximum width container with 5% spacing */}
-      <div className="w-full px-[2.5%] relative z-10">
-        <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold mb-4 sm:mb-6">
-            <Trophy className="h-3 w-3 sm:h-4 sm:w-4" />
-            Quest Log
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Completed Quests</h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
+        {/* Header */}
+        <div className="mb-14">
+          <div className="section-subtitle mb-3">// projects.filter(real)</div>
+          <h2 className="section-title">
+            What I've <span className="neon-text">Built</span>
+          </h2>
+          <p className="text-gray-500 mt-3 max-w-xl">
+            Security-focused projects with real-world applicability. Each one solves an actual problem in the offensive security workflow.
+          </p>
         </div>
 
-        {/* Grid layout with 5% gaps */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[5%] mb-8 sm:mb-12">
-          {/* Featured Project - 70% width on desktop */}
-          <div className="lg:col-span-8">
-            <div
-              className={`relative bg-black/20 backdrop-blur-sm border-2 ${getRarityBorder(projects[0].rarity)} rounded-xl p-4 sm:p-6 lg:p-8 hover:scale-105 transition-all duration-300 overflow-hidden group`}
-              onMouseEnter={() => setHoveredProject(projects[0].id)}
-              onMouseLeave={() => setHoveredProject(null)}
-            >
-              {/* Rarity glow effect */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-r ${getRarityColor(projects[0].rarity)} opacity-10 group-hover:opacity-20 transition-opacity`}
-              />
-
-              {/* Rarity badge */}
-              <div
-                className={`absolute top-3 right-3 sm:top-4 sm:right-4 bg-gradient-to-r ${getRarityColor(projects[0].rarity)} text-black px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs font-bold`}
-              >
-                {projects[0].difficulty}
-              </div>
-
-              <div className="relative z-10">
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 sm:mb-6">
-                  <div>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2">{projects[0].title}</h3>
-                    <p className="text-purple-400 font-medium text-base sm:text-lg">{projects[0].subtitle}</p>
-                  </div>
-                  <span className="text-xs sm:text-sm text-gray-400 bg-black/30 px-2 py-1 sm:px-3 sm:py-1 rounded mt-2 sm:mt-0 self-start">
-                    {projects[0].year}
-                  </span>
-                </div>
-
-                <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base lg:text-lg">
-                  {projects[0].description}
-                </p>
-
-                {/* Progress Bar */}
-                <div className="mb-4 sm:mb-6">
-                  <div className="flex justify-between text-xs sm:text-sm text-gray-400 mb-2">
-                    <span>Quest Progress</span>
-                    <span>{projects[0].completionRate}%</span>
-                  </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2 sm:h-3">
-                    <div
-                      className={`h-2 sm:h-3 rounded-full bg-gradient-to-r ${getRarityColor(projects[0].rarity)} transition-all duration-1000`}
-                      style={{ width: `${projects[0].completionRate}%` }}
-                    />
-                  </div>
-                </div>
-
-                {/* Tech Stack with 5% gaps */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-[5%] mb-4 sm:mb-6">
-                  {projects[0].tech.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-1 sm:px-3 sm:py-1 bg-purple-600/30 text-purple-300 rounded-full text-xs sm:text-sm border border-purple-500/30 text-center"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Rewards */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 text-yellow-400">
-                      <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span className="font-bold text-sm sm:text-base">+{projects[0].xpReward} XP</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-orange-400">
-                      <Trophy className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span className="text-xs sm:text-sm">{projects[0].achievement}</span>
-                    </div>
-                  </div>
-
-                  {projects[0].url && (
-                    <a
-                      href={projects[0].url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 font-medium text-xs sm:text-sm"
-                    >
-                      View Quest
-                      <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Side Projects - 25% width on desktop */}
-          <div className="lg:col-span-4 space-y-[5%]">
-            {projects.slice(1).map((project) => (
-              <div
-                key={project.id}
-                className={`relative bg-black/20 backdrop-blur-sm border ${getRarityBorder(project.rarity)} rounded-xl p-4 sm:p-6 hover:scale-105 transition-all duration-300 overflow-hidden group`}
-                onMouseEnter={() => setHoveredProject(project.id)}
-                onMouseLeave={() => setHoveredProject(null)}
-              >
-                {/* Rarity glow effect */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-r ${getRarityColor(project.rarity)} opacity-10 group-hover:opacity-20 transition-opacity`}
-                />
-
-                {/* Rarity badge */}
-                <div
-                  className={`absolute top-3 right-3 bg-gradient-to-r ${getRarityColor(project.rarity)} text-black px-2 py-1 rounded-full text-xs font-bold`}
-                >
-                  {project.difficulty}
-                </div>
-
-                <div className="relative z-10">
-                  <div className="mb-4">
-                    <h3 className="text-lg sm:text-xl font-bold text-white mb-1">{project.title}</h3>
-                    <p className="text-purple-400 font-medium text-sm">{project.subtitle}</p>
-                  </div>
-
-                  <p className="text-gray-300 mb-4 text-xs sm:text-sm leading-relaxed">{project.description}</p>
-
-                  {/* Progress Bar */}
-                  <div className="mb-4">
-                    <div className="w-full bg-gray-700 rounded-full h-1.5 sm:h-2">
-                      <div
-                        className={`h-1.5 sm:h-2 rounded-full bg-gradient-to-r ${getRarityColor(project.rarity)}`}
-                        style={{ width: `${project.completionRate}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Tech Stack with 5% gaps */}
-                  <div className="grid grid-cols-2 gap-[5%] mb-4">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-1 bg-purple-600/30 text-purple-300 rounded text-xs border border-purple-500/30 text-center"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Rewards */}
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2 text-yellow-400">
-                      <Zap className="h-3 w-3" />
-                      <span className="font-bold text-xs">+{project.xpReward}</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-orange-400">
-                      <Trophy className="h-3 w-3" />
-                      <span className="text-xs">{project.achievement}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        {/* Project grid — first 3 in row, last 2 centered */}
+        <div
+          className={`space-y-5 transition-all duration-700 ${
+            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {projects.slice(0, 3).map((p, i) => (
+              <ProjectCard key={p.id} project={p} delay={i * 100} />
             ))}
-
-            {/* Achievement Summary */}
-            <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl p-4 sm:p-6">
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl mb-2">🎯</div>
-                <div className="text-green-400 font-bold text-sm sm:text-base">Quest Master</div>
-                <div className="text-white text-xs sm:text-sm">3/3 Quests Completed</div>
-                <div className="text-gray-400 text-xs mt-2">Total: +5,500 XP</div>
-              </div>
-            </div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:px-[12.5%]">
+            {projects.slice(3).map((p, i) => (
+              <ProjectCard key={p.id} project={p} delay={(i + 3) * 100} />
+            ))}
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+function ProjectCard({ project: p, delay }: { project: (typeof projects)[0]; delay: number }) {
+  return (
+    <div
+      className="card-dark border rounded-xl p-6 group hover:scale-[1.01] transition-all duration-300"
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {/* Header */}
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <span className="text-3xl">{p.emoji}</span>
+          <div>
+            <h3 className="text-white font-bold text-lg leading-tight">{p.title}</h3>
+            <span className={p.badgeColor}>{p.badge}</span>
+          </div>
+        </div>
+        <ExternalLink className="h-4 w-4 text-gray-600 group-hover:text-cyan-400 transition-colors flex-shrink-0 mt-1" />
+      </div>
+
+      {/* Description */}
+      <p className="text-gray-400 text-sm leading-relaxed mb-5">{p.description}</p>
+
+      {/* Real-world relevance */}
+      <div className="bg-cyan-400/5 border border-cyan-400/20 rounded-lg px-3 py-2 mb-5 flex items-start gap-2">
+        <Tag className="h-3.5 w-3.5 text-cyan-400 mt-0.5 flex-shrink-0" />
+        <span className="text-xs mono text-cyan-400">{p.relevance}</span>
+      </div>
+
+      {/* Tool tags */}
+      <div className="flex flex-wrap gap-1.5">
+        {p.tools.map((t) => (
+          <span key={t} className={p.toolClass}>{t}</span>
+        ))}
+      </div>
+    </div>
   )
 }

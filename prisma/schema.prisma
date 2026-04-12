@@ -1,0 +1,16 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique
+  content   String   // Markdown content
+  type      String   // "blog" or "lab"
+  createdAt DateTime @default(now())
+}

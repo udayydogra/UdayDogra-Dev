@@ -1,287 +1,262 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Mail, Github, Linkedin, ChevronDown, Gamepad2, Code, Rocket, Trophy } from "lucide-react"
+import { Shield, ChevronDown, Github, Mail, Terminal, AlertTriangle } from "lucide-react"
 import Image from "next/image"
+
+const roles = [
+  "Application Security Engineer",
+  "Bug Bounty Hunter",
+  "Web Vulnerability Researcher",
+  "Penetration Tester",
+]
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("")
-  const [showCursor, setShowCursor] = useState(true)
-  const [showAchievements, setShowAchievements] = useState(false)
-  const fullText = "Software Developer"
+  const [roleIndex, setRoleIndex] = useState(0)
+  const [charIndex, setCharIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [particles, setParticles] = useState<Array<{ left: string; top: string; delay: string; duration: string }>>([])
 
   useEffect(() => {
-    let index = 0
-    const typeInterval = setInterval(() => {
-      if (index < fullText.length) {
-        setTypedText(fullText.slice(0, index + 1))
-        index++
-      } else {
-        clearInterval(typeInterval)
-      }
-    }, 100)
-
-    const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev)
-    }, 500)
-
-    return () => {
-      clearInterval(typeInterval)
-      clearInterval(cursorInterval)
-    }
+    setParticles(
+      Array.from({ length: 25 }, () => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        delay: `${Math.random() * 4}s`,
+        duration: `${2 + Math.random() * 3}s`,
+      }))
+    )
   }, [])
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
+  useEffect(() => {
+    const current = roles[roleIndex]
+    let timeout: NodeJS.Timeout
+
+    if (!isDeleting && charIndex < current.length) {
+      timeout = setTimeout(() => {
+        setTypedText(current.slice(0, charIndex + 1))
+        setCharIndex((c) => c + 1)
+      }, 80)
+    } else if (!isDeleting && charIndex === current.length) {
+      timeout = setTimeout(() => setIsDeleting(true), 2000)
+    } else if (isDeleting && charIndex > 0) {
+      timeout = setTimeout(() => {
+        setTypedText(current.slice(0, charIndex - 1))
+        setCharIndex((c) => c - 1)
+      }, 40)
+    } else if (isDeleting && charIndex === 0) {
+      setIsDeleting(false)
+      setRoleIndex((i) => (i + 1) % roles.length)
     }
+
+    return () => clearTimeout(timeout)
+  }, [charIndex, isDeleting, roleIndex])
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
   }
 
   return (
-    <section id="home" className="pt-16 min-h-screen flex items-center relative overflow-hidden">
-      {/* Background Image - Responsive */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/background-image.jpg"
-          alt="Background"
-          fill
-          className="object-cover object-center"
-          priority
-          quality={85}
-          sizes="100vw"
-        />
-        {/* Responsive dark overlay */}
-        <div className="absolute inset-0 bg-black/50 sm:bg-black/55 lg:bg-black/60" />
-        {/* Gaming overlay with responsive gradients */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-blue-900/25 to-slate-900/30 sm:from-purple-900/40 sm:via-blue-900/30 sm:to-slate-900/40" />
-      </div>
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden bg-[#030712]">
+      {/* Cyber grid background */}
+      <div className="absolute inset-0 cyber-grid opacity-60" />
 
-      {/* Animated particles - Responsive density */}
+      {/* Radial glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,217,255,0.08)_0%,transparent_70%)]" />
+
+      {/* Floating particles */}
       <div className="absolute inset-0 z-10">
-        {[
-          ...Array(
-            typeof window !== "undefined" && window.innerWidth < 768
-              ? 15
-              : typeof window !== "undefined" && window.innerWidth < 1920
-                ? 30
-                : 50,
-          ),
-        ].map((_, i) => (
+        {particles.map((p, i) => (
           <div
             key={i}
-            className="absolute w-0.5 h-0.5 sm:w-1 sm:h-1 lg:w-1.5 lg:h-1.5 bg-white/20 sm:bg-white/30 rounded-full animate-pulse"
+            className="absolute w-0.5 h-0.5 bg-cyan-400 rounded-full opacity-40"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
+              left: p.left,
+              top: p.top,
+              animationDelay: p.delay,
+              animation: `float ${p.duration} ease-in-out infinite`,
             }}
           />
         ))}
       </div>
 
-      {/* Maximum width container with 5% spacing */}
-      <div className="w-full px-[2.5%] py-8 sm:py-12 lg:py-20 xl:py-24 relative z-20">
-        {/* Mobile Layout (xs to md) */}
-        <div className="block lg:hidden">
-          <div className="text-center space-y-6 sm:space-y-8">
-            {/* Avatar */}
+      {/* Scan line effect */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
+        <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent animate-scan" />
+      </div>
+
+      <div className="relative z-20 w-full px-6 sm:px-10 lg:px-16 py-20">
+        <div className="max-w-7xl mx-auto">
+
+          {/* Mobile layout */}
+          <div className="block lg:hidden space-y-8 text-center">
             <div className="flex justify-center">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full animate-pulse blur-sm opacity-40" />
-                <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-3 border-white/20">
-                  <Image src="/My-profile.jpeg" alt="Uday Dogra Profile" fill className="object-cover" priority />
+                <div className="absolute inset-0 rounded-full bg-cyan-400/20 blur-2xl scale-110 animate-glow" />
+                <div className="relative w-36 h-36 rounded-full overflow-hidden border-2 border-cyan-400/40">
+                  <Image src="/My-profile.jpeg" alt="Uday Dogra" fill className="object-cover" priority />
                 </div>
-                <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-3 py-1 rounded-full text-sm font-bold">
-                  LVL 9
+                <div className="absolute -bottom-2 -right-2 bg-green-400 rounded-full w-5 h-5 border-2 border-[#030712] flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-green-900" />
                 </div>
               </div>
             </div>
 
-            {/* Player Badge */}
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">
-              <Gamepad2 className="h-4 w-4" />
-              <span>Player: Uday Dogra</span>
-            </div>
-
-            {/* Name and Title */}
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight">
-                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Uday</span>
-                <br />
-                <span className="text-white">Dogra</span>
+            <div className="space-y-1">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span className="mono text-xs text-red-400 uppercase tracking-widest">Active Researcher</span>
+              </div>
+              <h1 className="text-5xl sm:text-6xl font-black text-white leading-none">
+                Uday<span className="neon-text"> Dogra</span>
               </h1>
-              <div className="text-lg sm:text-xl md:text-2xl text-gray-200 h-8">
-                {typedText}
-                <span className={`${showCursor ? "opacity-100" : "opacity-0"} transition-opacity`}>|</span>
+              <div className="h-10 flex items-center justify-center">
+                <span className="text-lg text-gray-400 mono">
+                  {typedText}<span className="terminal-cursor text-cyan-400">|</span>
+                </span>
               </div>
             </div>
 
-            {/* Stats - Mobile Grid */}
-            <div className="grid grid-cols-3 gap-4 max-w-sm mx-auto">
-              <div className="bg-black/40 backdrop-blur-sm border border-purple-500/30 rounded-lg p-3 text-center">
-                <Code className="h-6 w-6 text-purple-400 mx-auto mb-2" />
-                <div className="text-xl font-bold text-white">15+</div>
-                <div className="text-xs text-gray-300">Tech</div>
-              </div>
-              <div className="bg-black/40 backdrop-blur-sm border border-blue-500/30 rounded-lg p-3 text-center">
-                <Rocket className="h-6 w-6 text-blue-400 mx-auto mb-2" />
-                <div className="text-xl font-bold text-white">3</div>
-                <div className="text-xs text-gray-300">Projects</div>
-              </div>
-              <div className="bg-black/40 backdrop-blur-sm border border-green-500/30 rounded-lg p-3 text-center">
-                <Gamepad2 className="h-6 w-6 text-green-400 mx-auto mb-2" />
-                <div className="text-xl font-bold text-white">2+</div>
-                <div className="text-xs text-gray-300">Years</div>
-              </div>
+            <p className="text-gray-400 text-base leading-relaxed max-w-sm mx-auto">
+              I find real-world vulnerabilities in modern web applications — before attackers do.
+            </p>
+
+            <div className="grid grid-cols-3 gap-3 max-w-xs mx-auto">
+              {[
+                { val: "5+", label: "Vulns Found" },
+                { val: "50+", label: "Labs Done" },
+                { val: "3", label: "Certs" },
+              ].map((s) => (
+                <div key={s.label} className="card-dark rounded-lg p-3 text-center">
+                  <div className="text-2xl font-black neon-text">{s.val}</div>
+                  <div className="text-xs text-gray-500 mono mt-1">{s.label}</div>
+                </div>
+              ))}
             </div>
 
-            {/* Contact Links - Mobile */}
-            <div className="flex justify-center space-x-4">
-              <a
-                href="mailto:Budaydogra204@gmail.com"
-                className="p-3 bg-black/30 backdrop-blur-sm border border-white/20 text-white rounded-lg hover:bg-white/20 transition-all"
-              >
-                <Mail className="h-5 w-5" />
-              </a>
-              <a
-                href="https://github.com/udayydogra"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-black/30 backdrop-blur-sm border border-white/20 text-white rounded-lg hover:bg-white/20 transition-all"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="p-3 bg-black/30 backdrop-blur-sm border border-white/20 text-white rounded-lg hover:bg-white/20 transition-all"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
-            </div>
-
-            {/* CTA Button */}
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all font-bold"
-            >
-              Get In Touch
-              <ChevronDown className="h-5 w-5 animate-bounce" />
-            </button>
-          </div>
-        </div>
-
-        {/* Desktop Layout (lg and up) */}
-        <div className="hidden lg:grid lg:grid-cols-12 gap-[5%] items-center min-h-[70vh]">
-          {/* Content Section - Left Side */}
-          <div className="lg:col-span-7 space-y-8 xl:space-y-10">
-            {/* Player Badge */}
-            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2.5 rounded-full text-lg font-bold">
-              <Gamepad2 className="h-6 w-6" />
-              <span>Player: Uday Dogra</span>
-            </div>
-
-            {/* Name and Title */}
-            <div className="space-y-6">
-              <h1 className="text-6xl xl:text-7xl 2xl:text-8xl font-bold text-white leading-tight">
-                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Uday</span>
-                <br />
-                <span className="text-white">Dogra</span>
-              </h1>
-              <div className="text-3xl xl:text-4xl 2xl:text-5xl text-gray-200 h-12 xl:h-16">
-                {typedText}
-                <span className={`${showCursor ? "opacity-100" : "opacity-0"} transition-opacity`}>|</span>
-              </div>
-            </div>
-
-            {/* Stats Grid - Desktop */}
-            <div className="grid grid-cols-3 gap-[5%] max-w-2xl">
-              <div className="bg-black/40 backdrop-blur-sm border border-purple-500/30 rounded-xl p-6 text-center hover:scale-105 transition-transform">
-                <Code className="h-8 w-8 text-purple-400 mx-auto mb-3" />
-                <div className="text-3xl font-bold text-white mb-2">15+</div>
-                <div className="text-gray-300">Technologies</div>
-              </div>
-              <div className="bg-black/40 backdrop-blur-sm border border-blue-500/30 rounded-xl p-6 text-center hover:scale-105 transition-transform">
-                <Rocket className="h-8 w-8 text-blue-400 mx-auto mb-3" />
-                <div className="text-3xl font-bold text-white mb-2">3</div>
-                <div className="text-gray-300">Projects</div>
-              </div>
-              <div className="bg-black/40 backdrop-blur-sm border border-green-500/30 rounded-xl p-6 text-center hover:scale-105 transition-transform">
-                <Gamepad2 className="h-8 w-8 text-green-400 mx-auto mb-3" />
-                <div className="text-3xl font-bold text-white mb-2">2+</div>
-                <div className="text-gray-300">Years Coding</div>
-              </div>
-            </div>
-
-            {/* Contact Links - Desktop */}
-            <div className="flex space-x-4">
-              <a
-                href="mailto:Budaydogra204@gmail.com"
-                className="flex items-center gap-3 bg-black/30 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg hover:bg-white/20 transition-all hover:scale-105"
-              >
-                <Mail className="h-5 w-5" />
-                <span>Email Me</span>
-              </a>
-              <a
-                href="https://github.com/udayydogra"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 bg-black/30 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg hover:bg-white/20 transition-all hover:scale-105"
-              >
-                <Github className="h-5 w-5" />
-                <span>GitHub</span>
-              </a>
-              <a
-                href="#"
-                className="flex items-center gap-3 bg-black/30 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg hover:bg-white/20 transition-all hover:scale-105"
-              >
-                <Linkedin className="h-5 w-5" />
-                <span>LinkedIn</span>
-              </a>
-            </div>
-
-            {/* CTA Button */}
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-10 py-5 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all hover:scale-105 font-bold text-xl shadow-lg"
-            >
-              Get In Touch
-              <ChevronDown className="h-6 w-6 animate-bounce" />
-            </button>
-          </div>
-
-          {/* Avatar Section - Right Side */}
-          <div className="lg:col-span-5 flex flex-col items-center space-y-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full animate-pulse blur-lg opacity-50" />
-              <div className="relative w-60 h-60 xl:w-72 xl:h-72 2xl:w-80 2xl:h-80 rounded-full overflow-hidden border-4 border-white/20">
-                <Image src="/My-profile.jpeg" alt="Uday Dogra Profile" fill className="object-cover" priority />
-              </div>
-              <div className="absolute -bottom-3 -right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-4 py-2 rounded-full text-lg font-bold">
-                LVL 9
-              </div>
-            </div>
-
-            {/* Achievement Preview */}
-            <div
-              className="bg-black/40 backdrop-blur-sm border border-purple-500/30 rounded-xl p-6 w-full text-center hover:scale-105 transition-transform cursor-pointer"
-              onClick={() => setShowAchievements(true)}
-            >
-              <div className="text-yellow-400 text-lg font-bold mb-2 flex items-center justify-center gap-2">
-                <Trophy className="h-5 w-5" />
-                Latest Achievement
-              </div>
-              <div className="text-white text-lg mb-1">🏆 React Master</div>
-              <div className="text-gray-400">Completed React.js certification</div>
-              <div className="text-purple-400 text-sm mt-2">Click to view all achievements</div>
+            <div className="flex items-center justify-center gap-3">
+              <button onClick={() => scrollTo("projects")} className="btn-primary text-sm px-5 py-2.5">
+                View Work
+              </button>
+              <button onClick={() => scrollTo("contact")} className="btn-outline text-sm px-5 py-2.5">
+                Contact
+              </button>
             </div>
           </div>
-        </div>
 
-        {/* Ultra-wide Layout (2xl and up) */}
-        <div className="hidden 2xl:block">
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-            <div className="text-9xl font-bold text-white/5 select-none pointer-events-none">DEVELOPER</div>
+          {/* Desktop layout */}
+          <div className="hidden lg:grid lg:grid-cols-12 gap-12 items-center min-h-[80vh]">
+            {/* Left content */}
+            <div className="lg:col-span-7 space-y-8">
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span className="mono text-sm text-red-400 uppercase tracking-widest">Active Security Researcher</span>
+              </div>
+
+              <div className="space-y-3">
+                <div className="mono text-cyan-400 text-sm tracking-widest uppercase opacity-80">
+                  &gt; init_portfolio --mode=offensive
+                </div>
+                <h1 className="text-7xl xl:text-8xl font-black text-white leading-none tracking-tight">
+                  Breaking<br />
+                  <span className="neon-text glitch-text">Applications</span><br />
+                  <span className="text-gray-300 text-5xl xl:text-6xl">Before Hackers Do</span>
+                </h1>
+              </div>
+
+              <div className="h-8 flex items-center">
+                <Shield className="h-5 w-5 text-cyan-400 mr-3 flex-shrink-0" />
+                <span className="text-xl text-gray-300 mono">
+                  {typedText}<span className="terminal-cursor text-cyan-400">|</span>
+                </span>
+              </div>
+
+              <p className="text-gray-400 text-lg leading-relaxed max-w-xl">
+                Focused on finding real-world vulnerabilities in modern web applications.
+                Bug bounty hunter. Security researcher. Thinking like an attacker, documenting like a pro.
+              </p>
+
+              <div className="grid grid-cols-3 gap-5 max-w-lg">
+                {[
+                  { val: "5+", label: "Vulns Found", color: "text-red-400" },
+                  { val: "50+", label: "Labs Completed", color: "text-cyan-400" },
+                  { val: "3", label: "Certs Earned", color: "text-green-400" },
+                ].map((s) => (
+                  <div key={s.label} className="card-dark rounded-xl p-5 text-center hover:scale-105 transition-transform">
+                    <div className={`text-3xl font-black ${s.color}`}>{s.val}</div>
+                    <div className="text-xs text-gray-500 mono mt-1">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-4">
+                <button onClick={() => scrollTo("projects")} className="btn-primary flex items-center gap-2">
+                  <Terminal className="h-4 w-4" />
+                  View Work
+                </button>
+                <button onClick={() => scrollTo("contact")} className="btn-outline flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  Contact
+                </button>
+                <a
+                  href="https://github.com/udayydogra"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 card-dark rounded-lg hover:scale-105 transition-all flex items-center justify-center"
+                >
+                  <Github className="h-5 w-5 text-gray-400" />
+                </a>
+              </div>
+            </div>
+
+            {/* Right: Profile + terminal card */}
+            <div className="lg:col-span-5 flex flex-col items-center gap-6">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-full bg-cyan-400/15 blur-3xl scale-110 animate-glow" />
+                {/* Rotating ring */}
+                <div className="absolute inset-[-12px] rounded-full border border-dashed border-cyan-400/20 animate-spin-slow" />
+                <div className="relative w-64 h-64 xl:w-72 xl:h-72 rounded-full overflow-hidden border-2 border-cyan-400/30">
+                  <Image src="/My-profile.jpeg" alt="Uday Dogra" fill className="object-cover" priority />
+                </div>
+                <div className="absolute bottom-2 right-2 bg-green-400 rounded-full w-6 h-6 border-2 border-[#030712] flex items-center justify-center">
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-900" />
+                </div>
+              </div>
+
+              {/* Threat badge card */}
+              <div className="card-dark rounded-xl p-5 w-full max-w-xs">
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertTriangle className="h-4 w-4 text-yellow-400" />
+                  <span className="mono text-xs text-yellow-400 uppercase tracking-widest">Threat Level</span>
+                </div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-white font-bold">AppSec Proficiency</span>
+                  <span className="neon-text font-bold mono">L3 / Researcher</span>
+                </div>
+                <div className="w-full bg-gray-800 rounded-full h-2">
+                  <div className="h-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 w-[72%] animate-glow" />
+                </div>
+                <div className="mt-4 space-y-1.5">
+                  {[
+                    { label: "Web Recon", pct: "85%" },
+                    { label: "Exploitation", pct: "70%" },
+                    { label: "Reporting", pct: "80%" },
+                  ].map((item) => (
+                    <div key={item.label} className="flex justify-between text-xs text-gray-500 mono">
+                      <span>{item.label}</span>
+                      <span className="text-cyan-400">{item.pct}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-50">
+            <span className="mono text-xs text-gray-500">scroll</span>
+            <ChevronDown className="h-4 w-4 text-gray-500 animate-bounce" />
           </div>
         </div>
       </div>

@@ -1,13 +1,16 @@
+"use client"
+
 export default function Footer() {
   return (
-    <footer className="bg-black/40 backdrop-blur-sm border-t border-purple-500/30 text-white py-8 relative">
-      {/* Maximum width container with 5% spacing */}
-      <div className="w-full px-[2.5%]">
-        <div className="text-center">
-          <p className="text-gray-400">© 2025 Uday Dogra. Built with Next.js, Tailwind CSS, and lots of ⚡ energy.</p>
-          <p className="text-purple-400 text-sm mt-2">
-            🎮 Thanks for visiting my portfolio! Keep coding and stay awesome! 🚀
-          </p>
+    <footer className="py-8 border-t border-white/5 bg-[#030712]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="mono text-xs text-gray-600">
+            <span className="text-cyan-400">$</span> echo "Built by Uday Dogra — AppSec Researcher"
+          </div>
+          <div className="mono text-xs text-gray-700">
+            © 2025 · udaydogra204@gmail.com
+          </div>
         </div>
       </div>
     </footer>
