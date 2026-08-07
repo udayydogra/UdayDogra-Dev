@@ -11,6 +11,18 @@
         ],
         "createdAt": "2026-08-06T07:16:54.948Z",
         "reason": "User chose the Field Logbook direction; the engineer's computation-pad grid is the world's defining measurement surface"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-08-07T05:44:01.114Z",
+        "reason": "Same as Inter — classic portfolio @import token for the restored original design"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "animate-bounce",
+        "createdAt": "2026-08-07T05:44:01.194Z",
+        "reason": "Classic portfolio's original scroll-indicator animation; preserved as part of the faithful restore"
       }
     ]
   }
