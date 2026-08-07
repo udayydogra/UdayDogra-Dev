@@ -1,30 +1,49 @@
-# Vue3js portfolio site
+# Uday Dogra — AppSec Portfolio
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+A minimal, typography-driven portfolio (Brittany-Chiang-style split layout) built as a
+**security knowledge base**. The `/labs` section is backed by a Notion database of documented
+web-security labs — each with vulnerability class, root cause, exploitation path, and remediation.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/kingcoc1562004-gmailcoms-projects/v0-vue3js-portfolio-site)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/qr79a2MIrdk)
+Built with Next.js 15 (App Router), Tailwind CSS, and shadcn/ui.
 
-## Overview
+## Structure
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+- `app/page.tsx` — homepage (server component, fetches labs, renders the split layout)
+- `components/portfolio/*` — sidebar + homepage sections (About, Skills, Experience, Projects, Writing, Contact, Footer)
+- `components/labs/*` — lab cards, filterable explorer, Notion block renderer
+- `app/labs` — labs index (search + filter) and `app/labs/[slug]` writeup detail pages
+- `lib/site.ts` — all personal content & config (edit this to update your bio, links, projects)
+- `lib/notion.ts` — Notion data layer (fetch-based, no SDK); `lib/labs-fallback.ts` — sample data
+- `app/sitemap.ts`, `app/robots.ts` — SEO (includes every lab slug)
 
-## Deployment
+## Local development
 
-Your project is live at:
+```bash
+npm run dev     # http://localhost:3000
+npm run build   # production build
+```
 
-**[https://vercel.com/kingcoc1562004-gmailcoms-projects/v0-vue3js-portfolio-site](https://vercel.com/kingcoc1562004-gmailcoms-projects/v0-vue3js-portfolio-site)**
+Without Notion credentials the site builds and renders using a local sample dataset
+(`lib/labs-fallback.ts`), so nothing is blocked on setup.
 
-## Build your app
+## Connecting your Notion labs database
 
-Continue building your app on:
+1. Create an **internal integration** at https://www.notion.so/my-integrations and copy its
+   *Internal Integration Secret*.
+2. Open your **Mastered Labs** database in Notion → `•••` → **Connections** → add the integration
+   so it can read the database.
+3. Copy `.env.local.example` to `.env.local` and fill in:
+   ```
+   NOTION_TOKEN=secret_xxx
+   NOTION_DATABASE_ID=3138241e0c8d80038497d45a9cc296d9
+   ```
+4. Restart `npm run dev`. The homepage teaser, `/labs`, sitemap, and every writeup page now render
+   live from Notion (revalidated hourly via ISR).
 
-**[https://v0.dev/chat/projects/qr79a2MIrdk](https://v0.dev/chat/projects/qr79a2MIrdk)**
+On Vercel, add the same two variables under **Project → Settings → Environment Variables**.
 
-## How It Works
+## Personalizing
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+Edit `lib/site.ts` for name, role, bio, emails, social links, projects, experience, education, and
+certifications. Placeholder social URLs are marked with `// TODO`. Set `SITE_URL` to your real
+domain so canonical/OG/sitemap URLs are correct.

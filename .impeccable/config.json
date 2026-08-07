@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "app/globals.css"
+        ],
+        "createdAt": "2026-08-06T07:16:54.948Z",
+        "reason": "User chose the Field Logbook direction; the engineer's computation-pad grid is the world's defining measurement surface"
+      }
+    ]
+  }
+}
