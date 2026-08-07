@@ -18,8 +18,8 @@ export default async function LabsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 sm:px-10 lg:px-16">
-      <Link href="/" className="link-accent mono inline-flex items-center gap-2 text-sm">
-        <ArrowLeft className="h-4 w-4" /> Back home
+      <Link href="/editorial" className="link-accent mono inline-flex items-center gap-2 text-sm">
+        <ArrowLeft className="h-4 w-4" /> Back to portfolio
       </Link>
 
       <header className="mt-8 mb-10">

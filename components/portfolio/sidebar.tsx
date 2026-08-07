@@ -85,7 +85,15 @@ export default function Sidebar({ activeSection }: { activeSection: string }) {
         </nav>
       </div>
 
-      <SocialLinks className="mt-10" />
+      <div className="mt-10 flex items-center gap-5">
+        <SocialLinks />
+        <Link
+          href="/"
+          className="mono text-[0.7rem] uppercase tracking-widest text-[var(--slate)] transition-colors hover:text-[var(--accent)]"
+        >
+          ⇄ Switch view
+        </Link>
+      </div>
     </header>
   )
 }

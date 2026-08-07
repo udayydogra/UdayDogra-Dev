@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Classic-theme faces (editorial faces load via next/font) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
 /* ============================================================ */
 /* Editorial dark — near-black ground, warm off-white, one gold  */
 /* Fonts via next/font: --font-sans Archivo, --font-mono JetBrains Mono */
@@ -312,6 +315,113 @@ body {
       animation-range: entry 3% entry 30%;
     }
   }
+}
+
+/* ============================================================ */
+/* CLASSIC THEME — original cyber/hacker portfolio, scoped to    */
+/* .classic-root so it never touches the editorial world.        */
+/* ============================================================ */
+.classic-root {
+  font-family: "Inter", system-ui, sans-serif;
+  background: #030712;
+  color: #f8fafc;
+  min-height: 100vh;
+  letter-spacing: normal;
+  --cyber-blue: #00d9ff;
+  --cyber-green: #00ff88;
+}
+.classic-root ::selection { background: #00d9ff30; color: #00d9ff; }
+
+@keyframes glitch {
+  0% { transform: translate(0); text-shadow: 0 0 0 transparent; }
+  2% { transform: translate(-2px, 0); text-shadow: 2px 0 0 #00d9ff, -2px 0 0 #ff0055; }
+  4% { transform: translate(2px, 0); text-shadow: -2px 0 0 #00d9ff, 2px 0 0 #ff0055; }
+  6% { transform: translate(0); text-shadow: 0 0 0 transparent; }
+  100% { transform: translate(0); text-shadow: 0 0 0 transparent; }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(0, 217, 255, 0.2), 0 0 20px rgba(0, 217, 255, 0.1); }
+  50% { box-shadow: 0 0 20px rgba(0, 217, 255, 0.5), 0 0 40px rgba(0, 217, 255, 0.2), 0 0 60px rgba(0, 217, 255, 0.1); }
+}
+@keyframes text-glow {
+  0%, 100% { text-shadow: 0 0 10px rgba(0, 217, 255, 0.3); }
+  50% { text-shadow: 0 0 20px rgba(0, 217, 255, 0.8), 0 0 40px rgba(0, 217, 255, 0.4); }
+}
+@keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
+@keyframes terminal-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+@keyframes border-glow { 0%, 100% { border-color: rgba(0, 217, 255, 0.2); } 50% { border-color: rgba(0, 217, 255, 0.6); } }
+@keyframes progress-fill { from { width: 0%; } to { width: var(--target-width); } }
+@keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes dash { to { stroke-dashoffset: 0; } }
+
+.glitch-text { animation: glitch 5s infinite; }
+.glow-box { animation: glow-pulse 3s ease-in-out infinite; }
+.classic-root .text-glow { animation: text-glow 2s ease-in-out infinite; }
+.terminal-cursor { animation: terminal-blink 1s step-end infinite; }
+.float-anim { animation: float 4s ease-in-out infinite; }
+.cyber-grid {
+  background-image:
+    linear-gradient(rgba(0, 217, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 217, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.cyber-border { border: 1px solid rgba(0, 217, 255, 0.2); animation: border-glow 3s ease-in-out infinite; }
+.scanline-effect::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.4), transparent);
+  animation: scanline 4s linear infinite; pointer-events: none;
+}
+.neon-text { color: #00d9ff; text-shadow: 0 0 10px rgba(0, 217, 255, 0.5), 0 0 20px rgba(0, 217, 255, 0.2); }
+.neon-green { color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 255, 136, 0.2); }
+.card-dark {
+  background: rgba(13, 17, 23, 0.8); backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 217, 255, 0.15);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.card-dark:hover { border-color: rgba(0, 217, 255, 0.4); box-shadow: 0 0 20px rgba(0, 217, 255, 0.1); }
+.tag-cyber {
+  background: rgba(0, 217, 255, 0.1); border: 1px solid rgba(0, 217, 255, 0.3); color: #00d9ff;
+  font-family: "JetBrains Mono", monospace; font-size: 0.75rem; padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem; display: inline-block; transition: all 0.2s ease;
+}
+.tag-cyber:hover { background: rgba(0, 217, 255, 0.2); border-color: rgba(0, 217, 255, 0.6); }
+.tag-red {
+  background: rgba(255, 0, 85, 0.1); border: 1px solid rgba(255, 0, 85, 0.3); color: #ff4466;
+  font-family: "JetBrains Mono", monospace; font-size: 0.75rem; padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem; display: inline-block;
+}
+.tag-green {
+  background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); color: #00ff88;
+  font-family: "JetBrains Mono", monospace; font-size: 0.75rem; padding: 0.25rem 0.625rem;
+  border-radius: 0.25rem; display: inline-block;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #00d9ff, #0066ff); color: #030712; font-weight: 700;
+  padding: 0.75rem 2rem; border-radius: 0.375rem; transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3); border: none; cursor: pointer;
+}
+.btn-primary:hover { box-shadow: 0 0 30px rgba(0, 217, 255, 0.6), 0 0 60px rgba(0, 217, 255, 0.2); transform: translateY(-2px); }
+.btn-outline {
+  background: transparent; color: #00d9ff; font-weight: 600; padding: 0.75rem 2rem;
+  border-radius: 0.375rem; border: 1px solid rgba(0, 217, 255, 0.5); transition: all 0.3s ease; cursor: pointer;
+}
+.btn-outline:hover { background: rgba(0, 217, 255, 0.1); border-color: #00d9ff; box-shadow: 0 0 20px rgba(0, 217, 255, 0.2); transform: translateY(-2px); }
+.section-title { font-size: 2.5rem; font-weight: 800; color: #f8fafc; letter-spacing: -0.02em; }
+.section-subtitle {
+  color: #00d9ff; font-family: "JetBrains Mono", monospace; font-size: 0.875rem;
+  font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .animate-fadeInUp { animation: fadeInUp 0.6s ease forwards; }
+  .animate-fadeInLeft { animation: fadeInLeft 0.6s ease forwards; }
+  .animate-glitch { animation: glitch 5s infinite; }
+  .animate-float { animation: float 4s ease-in-out infinite; }
+  .animate-spin-slow { animation: spin-slow 20s linear infinite; }
 }
 
 @layer base {
