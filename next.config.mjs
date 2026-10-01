@@ -11,9 +11,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 // everything else below (frame-ancestors, nosniff, etc.) is already strict.
 // fonts.googleapis.com/gstatic.com are allowed for the classic theme's remote
 // Inter @import in globals.css (editorial faces are self-hosted via next/font).
+// React's dev server needs eval() for fast-refresh / callstack reconstruction;
+// production never does, so 'unsafe-eval' is gated to development only.
+const isDev = process.env.NODE_ENV !== "production"
+const scriptSrc = isDev ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'" : "script-src 'self' 'unsafe-inline'"
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  scriptSrc,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: https:",
   "font-src 'self' https://fonts.gstatic.com",
