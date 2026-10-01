@@ -37,6 +37,7 @@ function meta(
     trustBoundary: partial.trustBoundary ?? null,
     bypassTechnique: partial.bypassTechnique ?? [],
     defenseObserved: partial.defenseObserved ?? [],
+    writeup: partial.writeup ?? null,
     createdTime: partial.createdTime ?? "2026-04-01T00:00:00.000Z",
   }
 }

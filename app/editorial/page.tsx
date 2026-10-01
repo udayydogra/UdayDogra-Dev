@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Home from "@/components/portfolio/home"
 import { getLabs } from "@/lib/notion"
 
-export const revalidate = 3600
+export const revalidate = 60
 
 export const metadata: Metadata = {
   alternates: { canonical: "/editorial" },

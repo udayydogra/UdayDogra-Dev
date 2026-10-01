@@ -4,7 +4,8 @@ import { ArrowLeft } from "lucide-react"
 import { getLabs, notionEnabled } from "@/lib/notion"
 import LabsExplorer from "@/components/labs/labs-explorer"
 
-export const revalidate = 3600
+// Always fresh: reflect Notion edits on the next page load.
+export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Security Labs & Writeups",

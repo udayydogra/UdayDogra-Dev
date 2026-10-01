@@ -13,7 +13,7 @@ export default function CursorTrail() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    let animationId: number
+    let animationId: number | undefined
     let trailId = 0
 
     const updateTrail = (e: MouseEvent) => {

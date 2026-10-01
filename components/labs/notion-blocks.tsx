@@ -1,5 +1,27 @@
 import type { LabBlock, RichSpan } from "@/lib/notion"
 
+// Only allow safe link/image schemes. Blocks javascript:/data:/vbscript: etc.
+// that could slip in through Notion rich-text hrefs or image blocks.
+function safeHref(href: string | null | undefined): string | undefined {
+  if (!href) return undefined
+  try {
+    const u = new URL(href, "https://example.invalid")
+    return ["http:", "https:", "mailto:"].includes(u.protocol) ? href : undefined
+  } catch {
+    return undefined
+  }
+}
+
+function safeImgSrc(src: string | null | undefined): string | undefined {
+  if (!src) return undefined
+  try {
+    const u = new URL(src, "https://example.invalid")
+    return ["http:", "https:"].includes(u.protocol) ? src : undefined
+  } catch {
+    return undefined
+  }
+}
+
 function Spans({ spans }: { spans: RichSpan[] }) {
   return (
     <>
@@ -8,12 +30,15 @@ function Spans({ spans }: { spans: RichSpan[] }) {
         if (s.code) node = <code key={i}>{s.text}</code>
         if (s.bold) node = <strong key={i}>{node}</strong>
         if (s.italic) node = <em key={i}>{node}</em>
-        if (s.href)
-          node = (
-            <a key={i} href={s.href} target="_blank" rel="noopener noreferrer">
-              {node}
-            </a>
-          )
+        {
+          const href = safeHref(s.href)
+          if (href)
+            node = (
+              <a key={i} href={href} target="_blank" rel="noopener noreferrer">
+                {node}
+              </a>
+            )
+        }
         return <span key={i}>{node}</span>
       })}
     </>
@@ -87,17 +112,20 @@ export function NotionBlocks({ blocks }: { blocks: LabBlock[] }) {
           </pre>,
         )
         break
-      case "image":
+      case "image": {
+        const imgSrc = safeImgSrc(b.url)
+        if (!imgSrc) break
         out.push(
           <figure key={i}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={b.url} alt={b.caption ?? "writeup image"} />
+            <img src={imgSrc} alt={b.caption ?? "writeup image"} />
             {b.caption && (
               <figcaption className="text-sm text-[var(--slate)] mono">{b.caption}</figcaption>
             )}
           </figure>,
         )
         break
+      }
       case "divider":
         out.push(<hr key={i} className="my-6 border-[var(--lightest-navy)]" />)
         break

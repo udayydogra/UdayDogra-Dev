@@ -24,7 +24,7 @@ export default function Sidebar({ activeSection }: { activeSection: string }) {
           {site.role}
         </p>
 
-        <p className="mt-4 max-w-sm leading-relaxed text-[var(--slate)]">{site.tagline}</p>
+        <p className="mt-4 max-w-sm text-justify leading-relaxed text-[var(--slate)]">{site.tagline}</p>
 
         <p className="mono mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.72rem] text-[var(--slate)]">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />

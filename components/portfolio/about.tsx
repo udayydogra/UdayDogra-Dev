@@ -6,7 +6,7 @@ export default function About() {
       <h2 className="section-heading lg:sr-only">
         <span className="num">01.</span> About
       </h2>
-      <div className="space-y-4 text-[var(--slate)] leading-relaxed">
+      <div className="space-y-4 text-justify text-[var(--slate)] leading-relaxed">
         {aboutParagraphs.map((p, i) => (
           <p key={i}>{p}</p>
         ))}

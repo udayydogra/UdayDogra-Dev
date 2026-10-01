@@ -38,6 +38,7 @@ export type LabMeta = {
   trustBoundary: string | null
   bypassTechnique: string[]
   defenseObserved: string[]
+  writeup: string | null
   createdTime: string
 }
 
@@ -134,6 +135,7 @@ function mapPage(page: any): LabMeta {
     trustBoundary: getRich(props, "Trust Boundary Broken "),
     bypassTechnique: getMultiSelect(props, "Bypass Technique "),
     defenseObserved: getMultiSelect(props, "Defense Observed "),
+    writeup: getRich(props, "Writeup ") ?? getRich(props, "Writeup"),
     createdTime: page.created_time ?? "",
   }
 }
@@ -147,8 +149,9 @@ async function notionFetch(path: string, init?: RequestInit): Promise<any> {
       "Content-Type": "application/json",
       ...(init?.headers ?? {}),
     },
-    // ISR: revalidate once an hour so new Notion entries appear without redeploy.
-    next: { revalidate: 3600 },
+    // Short cache so Notion edits appear within ~10s (paired with force-dynamic lab pages),
+    // while still coalescing bursts of requests to stay under Notion's rate limit.
+    next: { revalidate: 10 },
   })
   if (!res.ok) {
     const body = await res.text().catch(() => "")
@@ -270,5 +273,146 @@ function mapBlock(b: any): LabBlock | null {
       return { type: "divider" }
     default:
       return null
+  }
+}
+
+// ---- Write API (admin panel) ----------------------------------------------
+
+const TITLE_PROP = process.env.NOTION_TITLE_PROP || "Name"
+
+export type LabInput = {
+  title: string
+  vulnerability?: string[]
+  platform?: string[]
+  severity?: string | null
+  difficulty?: string | null
+  cwe?: string[]
+  attackVector?: string | null
+  businessImpact?: string | null
+  secureFixStrategy?: string | null
+  body?: string // markdown
+}
+
+async function notionWrite(path: string, method: string, body: unknown): Promise<any> {
+  const res = await fetch(`${API}${path}`, {
+    method,
+    headers: {
+      Authorization: `Bearer ${NOTION_TOKEN}`,
+      "Notion-Version": NOTION_VERSION,
+      "Content-Type": "application/json",
+    },
+    body: body ? JSON.stringify(body) : undefined,
+    cache: "no-store",
+  })
+  if (!res.ok) {
+    const t = await res.text().catch(() => "")
+    throw new Error(`Notion API ${res.status}: ${t.slice(0, 300)}`)
+  }
+  return res.json()
+}
+
+function txt(content: string) {
+  return [{ type: "text", text: { content: (content || "").slice(0, 1900) } }]
+}
+
+function buildProperties(input: LabInput): Record<string, any> {
+  const p: Record<string, any> = { [TITLE_PROP]: { title: txt(input.title) } }
+  if (input.vulnerability) p["Vulnerability "] = { multi_select: input.vulnerability.map((n) => ({ name: n })) }
+  if (input.platform) p["Platform "] = { multi_select: input.platform.map((n) => ({ name: n })) }
+  if (input.severity !== undefined) p["Severity Estimate "] = input.severity ? { select: { name: input.severity } } : { select: null }
+  if (input.difficulty !== undefined) p["Difficulty "] = input.difficulty ? { select: { name: input.difficulty } } : { select: null }
+  if (input.cwe) p["CWE Mapping "] = { multi_select: input.cwe.map((n) => ({ name: n })) }
+  if (input.attackVector !== undefined) p["Attack Vector "] = { rich_text: txt(input.attackVector || "") }
+  if (input.businessImpact !== undefined) p["Buisness Impact "] = { rich_text: txt(input.businessImpact || "") }
+  if (input.secureFixStrategy !== undefined) p["Secure Fix Strategy "] = { rich_text: txt(input.secureFixStrategy || "") }
+  return p
+}
+
+// Minimal markdown -> Notion blocks (headings, code, lists, quote, divider, paragraphs).
+export function mdToBlocks(md: string): any[] {
+  const lines = (md || "").replace(/\r\n/g, "\n").split("\n")
+  const blocks: any[] = []
+  let i = 0
+  while (i < lines.length) {
+    const raw = lines[i]
+    if (raw.trim().startsWith("```")) {
+      const lang = raw.trim().slice(3).trim() || "plain text"
+      const code: string[] = []
+      i++
+      while (i < lines.length && !lines[i].trim().startsWith("```")) { code.push(lines[i]); i++ }
+      i++
+      blocks.push({ type: "code", code: { language: lang, rich_text: txt(code.join("\n")) } })
+      continue
+    }
+    const t = raw.trim()
+    if (!t) { i++; continue }
+    if (t.startsWith("### ")) blocks.push({ type: "heading_3", heading_3: { rich_text: txt(t.slice(4)) } })
+    else if (t.startsWith("## ")) blocks.push({ type: "heading_2", heading_2: { rich_text: txt(t.slice(3)) } })
+    else if (t.startsWith("# ")) blocks.push({ type: "heading_1", heading_1: { rich_text: txt(t.slice(2)) } })
+    else if (t.startsWith("> ")) blocks.push({ type: "quote", quote: { rich_text: txt(t.slice(2)) } })
+    else if (t.startsWith("- ") || t.startsWith("* ")) blocks.push({ type: "bulleted_list_item", bulleted_list_item: { rich_text: txt(t.slice(2)) } })
+    else if (/^\d+\.\s/.test(t)) blocks.push({ type: "numbered_list_item", numbered_list_item: { rich_text: txt(t.replace(/^\d+\.\s/, "")) } })
+    else if (t === "---") blocks.push({ type: "divider", divider: {} })
+    else blocks.push({ type: "paragraph", paragraph: { rich_text: txt(t) } })
+    i++
+  }
+  return blocks.slice(0, 100)
+}
+
+export function blocksToMd(blocks: LabBlock[]): string {
+  const spansText = (s: RichSpan[]) => s.map((x) => x.text).join("")
+  const out: string[] = []
+  for (const b of blocks) {
+    switch (b.type) {
+      case "heading_1": out.push("# " + spansText(b.spans)); break
+      case "heading_2": out.push("## " + spansText(b.spans)); break
+      case "heading_3": out.push("### " + spansText(b.spans)); break
+      case "paragraph": out.push(spansText(b.spans)); break
+      case "bulleted_list_item": out.push("- " + spansText(b.spans)); break
+      case "numbered_list_item": out.push("1. " + spansText(b.spans)); break
+      case "quote": out.push("> " + spansText(b.spans)); break
+      case "toggle":
+      case "callout": out.push(spansText(b.spans)); break
+      case "code": out.push("```" + (b.language || "") + "\n" + b.text + "\n```"); break
+      case "divider": out.push("---"); break
+    }
+  }
+  return out.join("\n\n")
+}
+
+export async function createLab(input: LabInput): Promise<{ id: string }> {
+  const res = await notionWrite("/pages", "POST", {
+    parent: { database_id: NOTION_DATABASE_ID },
+    properties: buildProperties(input),
+    children: input.body ? mdToBlocks(input.body) : [],
+  })
+  return { id: res.id }
+}
+
+export async function updateLab(id: string, input: LabInput): Promise<void> {
+  await notionWrite(`/pages/${id}`, "PATCH", { properties: buildProperties(input) })
+  if (input.body !== undefined) {
+    const existing = await notionWrite(`/blocks/${id}/children?page_size=100`, "GET", null)
+    for (const c of existing.results ?? []) {
+      await notionWrite(`/blocks/${c.id}`, "PATCH", { archived: true })
+    }
+    const blocks = mdToBlocks(input.body)
+    if (blocks.length) await notionWrite(`/blocks/${id}/children`, "PATCH", { children: blocks })
+  }
+}
+
+export async function archiveLab(id: string): Promise<void> {
+  await notionWrite(`/pages/${id}`, "PATCH", { archived: true })
+}
+
+export async function getLabById(id: string): Promise<Lab | null> {
+  const labs = await getLabs()
+  const meta = labs.find((l) => l.id === id)
+  if (!meta) return null
+  if (!notionEnabled) return { ...meta, blocks: [] }
+  try {
+    return { ...meta, blocks: await getBlocks(meta.id) }
+  } catch {
+    return { ...meta, blocks: [] }
   }
 }
