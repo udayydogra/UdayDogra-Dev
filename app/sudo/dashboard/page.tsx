@@ -1,10 +1,13 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import { ADMIN_COOKIE, verifySessionToken } from "@/lib/admin-session"
+
 export default async function DashboardPage() {
   const cookieStore = await cookies()
-  const session = cookieStore.get("admin_session")
+  const session = cookieStore.get(ADMIN_COOKIE)
 
-  if (session?.value !== "authenticated") {
+  // Reject anything but a valid, unexpired, server-signed token.
+  if (!verifySessionToken(session?.value)) {
     redirect("/sudo")
   }
 
